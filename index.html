@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<script>
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        window.location.href = "mobile.html";
+    }
+</script>
+<head>
+    <meta name="yandex-verification" content="04aab80bae7f14f9" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лепай</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <meta name="description" content="Я — Лепай (lepayy, l3payy). Проекты, плагины, ссылки и весёлые картинки.">
+    <meta name="keywords" content="Лепай, lepayy, l3payy, msvxdlss, портфолио, дизайн, плагины">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@500;600&family=Unbounded:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+    ::-webkit-scrollbar {display: none;}
+    
+        body, html { margin: 0; padding: 0; width: 100%; display: flex; flex-direction: column; align-items: center; transition: background-color 0.3s ease; color: #FFFFFF; overflow-x: hidden; font-family: 'Golos Text', sans-serif; }
+        body::-webkit-scrollbar {display: none;}
+        body {-ms-overflow-style: none; scrollbar-width: none;}
+        #title { margin-top: 36px; margin-bottom: 0; font-size: 96px; text-align: center; line-height: 1; user-select: none; font-weight: 400; -webkit-font-smoothing: antialiased; }
+        #music-title, #bottom-title { font-size: 64px; text-align: center; line-height: 1.2; user-select: none; font-weight: 400; -webkit-font-smoothing: antialiased; }
+        #music-title { margin-top: 168px; margin-bottom: 0; }
+        #bottom-title { margin-top: 168px; margin-bottom: 36px; }
+
+        .btn-telegram { margin-top: 36px; width: 316px; height: 44px; background-color: rgba(255, 255, 255, 0.2); border-radius: 14px; display: flex; justify-content: center; align-items: center; gap: 6px; text-decoration: none; color: #FFFFFF; font-family: 'Unbounded', sans-serif; font-size: 16px; font-weight: 600; transition: all 0.2s ease; }
+        .btn-telegram img { width: 20px; height: 20px; }
+        .btn-telegram:hover { background-color: rgba(255, 255, 255, 0.3); transform: scale(1.05); }
+
+        .triple-cards-container { margin-top: 64px; display: flex; gap: 36px; justify-content: center; width: 1384px; }
+        .card-triple { width: 437.33px; display: flex; flex-direction: column; text-decoration: none; color: #FFFFFF; transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1); }
+        .card-triple:hover { transform: scale(1.02); }
+        .card-image-placeholder { width: 100%; height: 200px; border-radius: 20px; background-color: rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .img-gonkus { width: 100%; height: 100%; object-fit: cover; }
+        .img-full { width: 100%; height: 100%; object-fit: cover; }
+        .img-mail { width: 245px; height: 44px; object-fit: contain; }
+        .card-content { margin-top: 12px; padding-left: 12px; }
+        .card-header { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .card-header h2 { margin: 0; font-family: 'Unbounded', sans-serif; font-size: 32px; font-weight: 600; }
+        .card-header .arrow-icon { width: 38px; height: 38px; }
+        .card-description { margin-top: 4px; font-family: 'Golos Text', sans-serif; font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.8); line-height: 1.4; }
+
+        .music-panel { margin-top: 36px; width: 1384px; height: 102px; border-radius: 14px; position: relative; overflow: hidden; background-color: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 12px; box-sizing: border-box; user-select: none; }
+        .music-panel::before { content: ""; position: absolute; inset: 0; background-image: url('player/cover.jpg'); background-size: cover; background-position: center; opacity: 0.2; z-index: -1; }
+        .track-info { display: flex; align-items: flex-start; gap: 8px; z-index: 2; }
+        .track-cover { width: 78px; height: 78px; border-radius: 4px; object-fit: cover; }
+        .track-text { display: flex; flex-direction: column; gap: 6px; }
+        .track-name { font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 20px; line-height: 1; }
+        .track-author { font-family: 'Golos Text', sans-serif; font-weight: 500; font-size: 14px; line-height: 1; color: rgba(255, 255, 255, 0.8); }
+        
+        .progress-container { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 12px; z-index: 2; }
+        .time-text { font-family: 'Golos Text', sans-serif; font-weight: 600; font-size: 12px; color: rgba(255, 255, 255, 0.6); width: 35px; text-align: center; }
+        .progress-bar-bg { width: 600px; height: 6px; background-color: rgba(255, 255, 255, 0.2); border-radius: 2px; position: relative; overflow: hidden; }
+        .progress-bar-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background-color: #FFFFFF; border-radius: 2px; transition: width 0.1s linear; }
+        
+        #play-pause-btn { width: 78px; height: 78px; cursor: pointer; transition: transform 0.2s ease; display: flex; justify-content: center; align-items: center; z-index: 2; }
+        #play-pause-btn:hover { transform: scale(1.1); }
+        #play-pause-btn img { width: 100%; height: 100%; object-fit: contain; }
+
+        .yandex-music-btn { margin-top: 12px; width: 310px; height: 40px; background-color: rgba(255, 255, 255, 0.2); border-radius: 14px; display: flex; justify-content: center; align-items: center; gap: 6px; text-decoration: none; color: #FFFFFF; font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 600; transition: all 0.2s ease; }
+        .yandex-music-btn:hover { background-color: rgba(255, 255, 255, 0.3); transform: scale(1.05); }
+        .yandex-music-btn .logo, .yandex-music-btn .arrow { width: 24px; height: 24px; }
+
+        .gallery-wrapper { width: 1384px; }
+        .gallery-container { column-count: 4; column-gap: 36px; width: 100%; }
+        .gallery-item { display: block; width: 100%; margin-bottom: 36px; border-radius: 14px; cursor: pointer; break-inside: avoid; transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1); }
+        .gallery-item:hover { transform: scale(1.03); }
+
+        .final-image { margin-top: 606px; width: auto; max-width: 90%; display: block; }
+        .footer-text { margin-top: 12px; margin-bottom: 68px; font-family: 'Unbounded', sans-serif; font-weight: 400; font-size: 14px; text-align: center; color: #FFFFFF; }
+
+        #modal { display: none; position: fixed; z-index: 1000; inset: 0; background-color: rgba(0, 0, 0, 0.4); justify-content: center; align-items: center; opacity: 0; transition: 0.4s; }
+        #modal.active { display: flex; opacity: 1; backdrop-filter: blur(15px); }
+        #modal-img { max-width: 90%; max-height: 90%; border-radius: 20px; transform: scale(0.8); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        #modal.active #modal-img { transform: scale(1); }
+    </style>
+</head>
+<body>
+    <h1 id="title">Привет, я Дима</h1>
+    <a href="https://t.me/msvxdlss" class="btn-telegram" target="_blank"><span>Telegram</span><img src="arrow.svg"></a>
+    
+    <div class="triple-cards-container">
+        <a href="https://www.behance.net/gallery/251106079/aukus-5" class="card-triple" target="_blank">
+            <div class="card-image-placeholder"><img src="1.png" class="img-gonkus"></div>
+            <div class="card-content"><div class="card-header"><h2>AUKUS 5</h2><img src="arrow.svg" class="arrow-icon"></div><div class="card-description">Пятый сезон уникального ивента</div></div>
+        </a>
+        <a href="https://www.behance.net/gallery/254336243/almanah-ReYohoho" class="card-triple" target="_blank">
+            <div class="card-image-placeholder"><img src="2.png" class="img-full"></div>
+            <div class="card-content"><div class="card-header"><h2>Главная ReYohoho</h2><img src="arrow.svg" class="arrow-icon"></div><div class="card-description">Альманах главной для Олега</div></div>
+        </a>
+        <a href="https://www.behance.net/lepayy" class="card-triple" target="_blank">
+            <div class="card-image-placeholder"><img src="3.svg" class="img-mail"></div>
+            <div class="card-content"><div class="card-header"><h2>Бёханс</h2><img src="arrow.svg" class="arrow-icon"></div><div class="card-description">Там работы всякие</div></div>
+        </a>
+    </div>
+
+    <h2 id="music-title">Трек дня</h2>
+    <div class="music-panel">
+        <div class="track-info">
+            <img src="player/cover.jpg" class="track-cover">
+            <div class="track-text"><span class="track-name">Empathy</span><span class="track-author">Crystal Castles</span></div>
+        </div>
+        <div class="progress-container">
+            <div class="time-text" id="current-time">0:00</div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+            <div class="time-text" id="duration">0:00</div>
+        </div>
+        <div id="play-pause-btn"><img id="btn-icon" src="player/Play.svg"></div>
+        <audio id="main-track" src="player/track.mp3"></audio>
+    </div>
+
+    <a href="https://music.yandex.ru/album/218382/track/565123" class="yandex-music-btn" target="_blank">
+        <img src="Yandex.svg" class="logo">
+        <span>Прослушать композицию</span>
+        <img src="arrow.svg" class="arrow">
+    </a>
+
+    <h2 id="bottom-title">А теперь весёлые картинки</h2>
+    <div class="gallery-wrapper"><div id="gallery" class="gallery-container"></div></div>
+
+    <img src="end.jpg" class="final-image">
+    <p class="footer-text">Почта — lepayy@bk.ru</p>
+
+    <div id="modal"><img id="modal-img"></div>
+
+    <script>
+        const audio = document.getElementById('main-track');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const btnIcon = document.getElementById('btn-icon');
+        const progressFill = document.getElementById('progress-fill');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+
+        function formatTime(s) { const min = Math.floor(s/60); const sec = Math.floor(s%60); return `${min}:${sec<10?'0'+sec:sec}`; }
+        
+        audio.ontimeupdate = () => { 
+            progressFill.style.width = (audio.currentTime/audio.duration)*100+'%'; 
+            currentTimeEl.textContent = formatTime(audio.currentTime); 
+        };
+        audio.onloadedmetadata = () => { durationEl.textContent = formatTime(audio.duration); };
+        
+        playPauseBtn.onclick = () => { 
+            if (audio.paused) { audio.play(); btnIcon.src = 'player/Pause.svg'; } 
+            else { audio.pause(); btnIcon.src = 'player/Play.svg'; } 
+        };
+
+        const hue = Math.floor(Math.random()*360); 
+        document.body.style.backgroundColor = `hsl(${hue}, 90%, 50%)`;
+
+        const fontFiles = ['1.otf','2.otf','3.ttf','4.ttf','5.ttf','6.ttf','7.ttf','8.ttf','9.ttf','10.ttf','11.ttf','12.ttf','13.ttf'];
+        const randomFont = fontFiles[Math.floor(Math.random()*fontFiles.length)];
+        const style = document.createElement('style'); 
+        style.appendChild(document.createTextNode(`@font-face { font-family: 'RF'; src: url('fonts/${randomFont}'); } #title, #bottom-title, #music-title { font-family: 'RF', sans-serif; }`)); 
+        document.head.appendChild(style);
+
+        const images = Array.from({length:61}, (_,i)=>`1 (${i+1}).jpg`).sort(()=>Math.random()-0.5);
+        const gallery = document.getElementById('gallery');
+        images.forEach(n => { 
+            const img = document.createElement('img'); 
+            img.src = `rImages/${n}`; 
+            img.className = 'gallery-item'; 
+            img.onclick = () => { 
+                document.getElementById('modal-img').src = img.src; 
+                document.getElementById('modal').style.display = 'flex'; 
+                setTimeout(() => document.getElementById('modal').classList.add('active'), 10); 
+                document.body.style.overflow = 'hidden'; 
+            }; 
+            gallery.appendChild(img); 
+        });
+
+        document.getElementById('modal').onclick = () => { 
+            document.getElementById('modal').classList.remove('active'); 
+            setTimeout(() => { document.getElementById('modal').style.display = 'none'; document.body.style.overflow = 'auto'; }, 400); 
+        };
+    </script>
+</body>
+</html>
