@@ -111,8 +111,6 @@ body {
   mask-position: center;
 }
 
-.center-link,
-.center-link:hover,
 .center-logo,
 .center-logo:hover {
   cursor: default;
@@ -245,6 +243,7 @@ body:has(.work-logo:hover, .bh-logo:hover, .tg-logo:hover) .dim-overlay {
   align-items: center;
   gap: 12px;
   z-index: 7;
+  display: none; /* временно скрыто */
 }
 
 .music-widget:has(.music-btn:hover) {
