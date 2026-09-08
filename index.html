@@ -7,7 +7,7 @@
   <link rel="icon" href="icon/icon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;900&family=Golos+Text:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script>
     if (window.matchMedia('(max-width: 768px)').matches) {
@@ -46,53 +46,102 @@
       <button class="music-btn" aria-label="Play / Pause">
         <div class="music-icon"></div>
       </button>
-      <audio id="music-audio" src="https://cdn.jsdelivr.net/gh/l3payy/l3payy.github.io@main/mus/track.mp3" preload="none"></audio>
+      <audio id="music-audio" src="https://cdn.jsdelivr.net/gh/l3payy/l3payy.github.io@main/mus/track.mp3" preload="metadata"></audio>
     </div>
     <div class="music-text">
       <div class="music-title" id="track-title">Our Connection</div>
       <div class="music-artist" id="track-artist">Outdate Electro</div>
+      <div class="music-time">
+        <span class="music-cur" id="track-cur">0:00</span>
+        <div class="music-bar" id="track-bar"><div class="music-fill" id="track-fill"></div></div>
+        <span class="music-dur" id="track-dur">0:00</span>
+      </div>
     </div>
   </div>
 
   <script src="track.js"></script>
   <script>
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
     if (window.TRACK_INFO) {
       document.getElementById('track-title').textContent = window.TRACK_INFO.title;
       document.getElementById('track-artist').textContent = window.TRACK_INFO.artist;
     }
     const audio = document.getElementById('music-audio');
-    const TARGET_VOLUME = 0.05;
+    const TARGET_VOLUME = 0.04;
     const FADE_IN_MS = 2000;
     audio.volume = 0;
     let fadeTimer = null;
     const btn = document.querySelector('.music-btn');
+    const widget = document.querySelector('.music-widget');
     const icon = document.querySelector('.music-icon');
+    const cur = document.getElementById('track-cur');
+    const dur = document.getElementById('track-dur');
+    const bar = document.getElementById('track-bar');
+    const fill = document.getElementById('track-fill');
+    function fmt(t) {
+      if (!isFinite(t)) return '0:00';
+      t = Math.floor(t);
+      return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0');
+    }
     function setIcon(name) {
       icon.style.webkitMaskImage = "url('mus/" + name + ".svg')";
       icon.style.maskImage = "url('mus/" + name + ".svg')";
     }
+    function fadeIn() {
+      clearInterval(fadeTimer);
+      const step = TARGET_VOLUME / (FADE_IN_MS / 50);
+      fadeTimer = setInterval(() => {
+        if (audio.volume + step >= TARGET_VOLUME) {
+          audio.volume = TARGET_VOLUME;
+          clearInterval(fadeTimer);
+        } else {
+          audio.volume += step;
+        }
+      }, 50);
+    }
+    function startPlayback() {
+      audio.volume = 0;
+      let p;
+      try { p = audio.play(); } catch (e) { return; }
+      if (p && p.then) {
+        p.then(() => {
+          setIcon('pause');
+          widget.classList.add('is-playing');
+          fadeIn();
+        }).catch(() => {});
+      } else {
+        setIcon('pause');
+        widget.classList.add('is-playing');
+        fadeIn();
+      }
+    }
     btn.addEventListener('click', () => {
       clearInterval(fadeTimer);
       if (audio.paused) {
-        audio.volume = 0;
-        audio.play();
-        setIcon('pause');
-        const step = TARGET_VOLUME / (FADE_IN_MS / 50);
-        fadeTimer = setInterval(() => {
-          if (audio.volume + step >= TARGET_VOLUME) {
-            audio.volume = TARGET_VOLUME;
-            clearInterval(fadeTimer);
-          } else {
-            audio.volume += step;
-          }
-        }, 50);
+        startPlayback();
       } else {
         audio.pause();
         setIcon('play');
+        widget.classList.remove('is-playing');
       }
+    });
+    audio.addEventListener('loadedmetadata', () => {
+      dur.textContent = fmt(audio.duration);
+    });
+    audio.addEventListener('timeupdate', () => {
+      cur.textContent = fmt(audio.currentTime);
+      if (audio.duration) {
+        fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+      }
+    });
+    bar.addEventListener('click', (e) => {
+      if (!audio.duration) return;
+      const r = bar.getBoundingClientRect();
+      audio.currentTime = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1) * audio.duration;
     });
     audio.addEventListener('ended', () => {
       setIcon('play');
+      widget.classList.remove('is-playing');
     });
   </script>
 
