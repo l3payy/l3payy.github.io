@@ -40,8 +40,11 @@
   
   <a href="https://t.me/msvxdlss" target="_blank" rel="noopener"><div class="tg-logo"></div></a>
 
+  <!--
   <div class="focus-logo"></div>
+  -->
 
+  <!--
   <div class="music-widget">
     <button class="music-btn" aria-label="Play / Pause">
       <div class="music-icon"></div>
@@ -58,15 +61,79 @@
     </div>
     <audio id="music-audio" src="https://cdn.jsdelivr.net/gh/l3payy/l3payy.github.io@main/mus/track.mp3" preload="metadata"></audio>
   </div>
+  -->
+
+  <div class="works-page" id="worksPage" aria-hidden="true">
+    <div class="works-dim"></div>
+    <div class="works-logo"></div>
+    <div class="works-arrow left" id="worksBackLeft"></div>
+    <div class="works-arrow right" id="worksBackRight"></div>
+    <div class="works-list">
+      <div class="works-row">
+        <a class="work-item wi-aukus5" href="https://www.behance.net/gallery/251106079/aukus-5" target="_blank" rel="noopener"></a>
+        <div class="work-divider"></div>
+        <a class="work-item wi-aukus3" href="https://www.behance.net/gallery/207948175/AUKUS-2024-Twitch-Event" target="_blank" rel="noopener"></a>
+        <div class="work-divider"></div>
+        <a class="work-item wi-gonkys" href="https://www.behance.net/gallery/246950545/GONKUS" target="_blank" rel="noopener"></a>
+        <div class="work-divider"></div>
+      </div>
+      <div class="works-row">
+        <div class="work-divider"></div>
+        <a class="work-item wi-igro" href="https://www.behance.net/gallery/224537291/igropolius-tvich-ivent" target="_blank" rel="noopener"></a>
+        <div class="work-divider"></div>
+      </div>
+      <div class="works-row">
+        <a class="work-item wi-reyo" href="https://www.behance.net/gallery/254336243/almanah-ReYohoho" target="_blank" rel="noopener"></a>
+        <div class="work-divider"></div>
+        <a class="work-item wi-mir" href="https://www.behance.net/gallery/246954043/banery-dlja-mir-arendy" target="_blank" rel="noopener"></a>
+        <div class="work-divider"></div>
+      </div>
+      <div class="works-row">
+        <a class="work-item wi-twitch" href="https://github.com/l3payy/Twitch-and-VK-Video-Live-point-auto-click" target="_blank" rel="noopener"></a>
+        <div class="work-divider"></div>
+      </div>
+      <div class="works-row">
+        <a class="work-item wi-images" href="https://github.com/l3payy/twitch-images-in-chat" target="_blank" rel="noopener"></a>
+        <div class="work-divider"></div>
+      </div>
+      <div class="works-row">
+        <a class="work-item wi-divizion" href="https://www.behance.net/gallery/225411105/sajt-poshiva-sportivnoj-odezhdy-(2021)" target="_blank" rel="noopener"></a>
+        <div class="work-divider"></div>
+      </div>
+    </div>
+  </div>
 
   <script src="track.js"></script>
   <script>
     document.addEventListener('contextmenu', (e) => e.preventDefault());
-    if (window.TRACK_INFO) {
+
+    const worksPage = document.getElementById('worksPage');
+    function openWorks() {
+      if (audio && !audio.paused) {
+        clearInterval(fadeTimer);
+        audio.pause();
+        setIcon('play');
+        widget.classList.remove('is-playing');
+      }
+      document.body.classList.add('works-open');
+      worksPage.setAttribute('aria-hidden', 'false');
+    }
+    function closeWorks() {
+      document.body.classList.remove('works-open');
+      worksPage.setAttribute('aria-hidden', 'true');
+    }
+    document.querySelector('.work-logo').addEventListener('click', openWorks);
+    document.getElementById('worksBackLeft').addEventListener('click', closeWorks);
+    document.getElementById('worksBackRight').addEventListener('click', closeWorks);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeWorks();
+    });
+    if (window.TRACK_INFO && document.getElementById('track-title')) {
       document.getElementById('track-title').textContent = window.TRACK_INFO.title;
       document.getElementById('track-artist').textContent = window.TRACK_INFO.artist;
     }
     const audio = document.getElementById('music-audio');
+    if (audio) {
     const TARGET_VOLUME = 0.05;
     const FADE_IN_MS = 2000;
     audio.volume = 0;
@@ -143,6 +210,7 @@
       setIcon('play');
       widget.classList.remove('is-playing');
     });
+    }
   </script>
 
 </body>
