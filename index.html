@@ -23,7 +23,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;900&family=Golos+Text:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script>
-    if (window.matchMedia('(max-width: 768px)').matches) {
+    if (window.matchMedia('(max-width: 768px)').matches ||
+        window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches) {
       location.replace('mobile.html');
     }
   </script>
