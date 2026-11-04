@@ -1,246 +1,57 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Лепай</title>
-  <meta name="description" content="Я — Лепай (lepayy, l3payy). Проекты, плагины, ссылки и весёлые картинки.">
-  <meta name="keywords" content="Лепай, lepayy, l3payy, msvxdlss, портфолио, дизайн, плагины">
-  <meta name="author" content="Лепай">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Дима (Лепай) — портфолио</title>
+  <meta name="description" content="Я — Дима, он же Лепай (lepayy, l3payy). Портфолио: графика, оформление Twitch-ивентов, баннеры и веб-дизайн.">
+  <meta name="keywords" content="Дима, Лепай, lepayy, l3payy, msvxdlss, портфолио, дизайн, графика, Twitch, Behance">
+  <meta name="author" content="Дима (Лепай)">
   <meta name="theme-color" content="#000000">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://l3payy.github.io/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Лепай">
-  <meta property="og:description" content="Я — Лепай (lepayy, l3payy). Проекты, плагины, ссылки и весёлые картинки.">
-  <meta property="og:image" content="https://l3payy.github.io/poster.png">
+  <meta property="og:title" content="Дима (Лепай) — портфолио">
+  <meta property="og:description" content="Портфолио: графика, оформление Twitch-ивентов, баннеры и веб-дизайн.">
   <meta property="og:url" content="https://l3payy.github.io/">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Лепай">
-  <meta name="twitter:description" content="Я — Лепай (lepayy, l3payy). Проекты, плагины, ссылки и весёлые картинки.">
-  <meta name="twitter:image" content="https://l3payy.github.io/poster.png">
-  <link rel="icon" href="icon/icon.png" type="image/png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Дима (Лепай) — портфолио">
+  <meta name="twitter:description" content="Портфолио: графика, оформление Twitch-ивентов, баннеры и веб-дизайн.">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;900&family=Golos+Text:wght@500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script>
-    if (window.matchMedia('(max-width: 768px)').matches ||
-        window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches) {
-      location.replace('mobile.html');
-    }
-  </script>
-  <script src="accent.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20261104-60">
 </head>
 <body>
+  <div id="root">
+    <img class="bg" src="bg/sun.jpg?v=4" alt="" draggable="false">
+    <img class="bg bg--overlay" src="bg/sun.jpg?v=4" alt="" aria-hidden="true" draggable="false">
+    <div class="veil" aria-hidden="true"></div>
 
-  <header class="visually-hidden">
-    <h1>Лепай (lepayy, l3payy) — дизайн, плагины и проекты</h1>
-    <p>Портфолио Лепая: оформление Twitch, плагины, веб-дизайн. Behance и Telegram для связи.</p>
-    <nav>
-      <a href="https://www.behance.net/lepayy">Behance Лепая</a>
-      <a href="https://t.me/msvxdlss">Telegram Лепая</a>
-      <a href="https://www.behance.net/gallery/251106079/aukus-5">AUKUS-5</a>
-      <a href="https://www.behance.net/gallery/207948175/AUKUS-2024-Twitch-Event">AUKUS-3</a>
-      <a href="https://www.behance.net/gallery/246950545/GONKUS">GONKYS</a>
-      <a href="https://www.behance.net/gallery/224537291/igropolius-tvich-ivent">IGROPOLIUS</a>
-      <a href="https://www.behance.net/gallery/254336243/almanah-ReYohoho">REYOHOHO</a>
-      <a href="https://www.behance.net/gallery/246954043/banery-dlja-mir-arendy">MIR-ARENDY-RF</a>
-      <a href="https://github.com/l3payy/Twitch-and-VK-Video-Live-point-auto-click">Twitch and VK point auto-click</a>
-      <a href="https://github.com/l3payy/twitch-images-in-chat">Images in Twitch, VK and Kick chat</a>
-      <a href="https://www.behance.net/gallery/225411105/sajt-poshiva-sportivnoj-odezhdy-(2021)">DIVIZION-SPORT</a>
-    </nav>
-  </header>
-
-  
-  <div class="video-container">
-    <video id="bg-video" autoplay loop muted playsinline preload="auto" poster="poster.png">
-      <source src="https://cdn.jsdelivr.net/gh/l3payy/l3payy.github.io@main/bg.mp4" type="video/mp4">
-    </video>
-  </div>
-
-  <div class="black-overlay"></div>
-
-  <div class="color-overlay"></div>
-
-  <div class="dim-overlay"></div>
-
-  <div class="center-logo"></div>
-
-  <div class="work-logo"></div>
-
-  <a href="https://www.behance.net/lepayy" target="_blank" rel="noopener"><div class="bh-logo"></div></a>
-  
-  <a href="https://t.me/msvxdlss" target="_blank" rel="noopener"><div class="tg-logo"></div></a>
-
-  <a href="https://github.com/l3payy/Focus" target="_blank" rel="noopener"><div class="focus-logo"></div></a>
-
-  <!--
-  <div class="music-widget">
-    <button class="music-btn" aria-label="Play / Pause">
-      <div class="music-icon"></div>
-    </button>
-    <img src="mus/cover.webp" class="music-cover" draggable="false">
-    <div class="music-text">
-      <div class="music-title" id="track-title">Our Connection</div>
-      <div class="music-artist" id="track-artist">Outdate Electro</div>
-      <div class="music-time">
-        <span class="music-cur" id="track-cur">0:00</span>
-        <div class="music-bar" id="track-bar"><div class="music-fill" id="track-fill"></div></div>
-        <span class="music-dur" id="track-dur">0:00</span>
-      </div>
+    <div class="hero">
+      <h1 class="hero-title">Привет, я Дима</h1>
+      <p class="hero-subtitle">в 2008 бог изгнал нас из фрутигер аеро,<br>я приглашаю вас обратно</p>
     </div>
-    <audio id="music-audio" src="https://cdn.jsdelivr.net/gh/l3payy/l3payy.github.io@main/mus/track.mp3" preload="metadata"></audio>
-  </div>
-  -->
 
-  <div class="works-page" id="worksPage" aria-hidden="true">
-    <div class="works-dim"></div>
-    <div class="works-logo"></div>
-    <div class="works-arrow left" id="worksBackLeft"></div>
-    <div class="works-arrow right" id="worksBackRight"></div>
-    <div class="works-list">
-      <div class="works-row">
-        <a class="work-item wi-aukus5" href="https://www.behance.net/gallery/251106079/aukus-5" target="_blank" rel="noopener"></a>
-        <div class="work-divider"></div>
-        <a class="work-item wi-aukus3" href="https://www.behance.net/gallery/207948175/AUKUS-2024-Twitch-Event" target="_blank" rel="noopener"></a>
-        <div class="work-divider"></div>
-        <a class="work-item wi-gonkys" href="https://www.behance.net/gallery/246950545/GONKUS" target="_blank" rel="noopener"></a>
-        <div class="work-divider"></div>
-      </div>
-      <div class="works-row">
-        <div class="work-divider"></div>
-        <a class="work-item wi-igro" href="https://www.behance.net/gallery/224537291/igropolius-tvich-ivent" target="_blank" rel="noopener"></a>
-        <div class="work-divider"></div>
-      </div>
-      <div class="works-row">
-        <a class="work-item wi-reyo" href="https://www.behance.net/gallery/254336243/almanah-ReYohoho" target="_blank" rel="noopener"></a>
-        <div class="work-divider"></div>
-        <a class="work-item wi-mir" href="https://www.behance.net/gallery/246954043/banery-dlja-mir-arendy" target="_blank" rel="noopener"></a>
-        <div class="work-divider"></div>
-      </div>
-      <div class="works-row">
-        <a class="work-item wi-twitch" href="https://chromewebstore.google.com/detail/twitch-and-vk-point-click/keocanoechjcomkfnmgmaamjeipapihp" target="_blank" rel="noopener"></a>
-        <div class="work-divider"></div>
-      </div>
-      <div class="works-row">
-        <a class="work-item wi-images" href="https://github.com/l3payy/twitch-images-in-chat" target="_blank" rel="noopener"></a>
-        <div class="work-divider"></div>
-      </div>
-      <div class="works-row">
-        <a class="work-item wi-divizion" href="https://www.behance.net/gallery/225411105/sajt-poshiva-sportivnoj-odezhdy-(2021)" target="_blank" rel="noopener"></a>
-        <div class="work-divider"></div>
+    <div class="weather-scale">
+      <div class="weather glass-effect is-loading" id="weather" aria-live="polite" aria-busy="true">
+        <img class="weather__icon" id="weatherIcon" src="weatherIcon/sun.svg?v=20261104-59" alt="">
+        <div class="weather__body">
+          <div class="weather__place">
+            <img class="weather__point" src="weatherIcon/point.svg" alt="">
+            <span class="weather__place-name" id="weatherCity">Ваш город</span>
+          </div>
+          <div class="weather__state weather__state--loading" id="weatherDesc">Узнаем погоду</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <script src="track.js"></script>
-  <script>
-    document.addEventListener('contextmenu', (e) => e.preventDefault());
+  <a class="privacy-link" href="PRIVACY.html">Политика конфиденциальности</a>
 
-    const worksPage = document.getElementById('worksPage');
-    function openWorks() {
-      if (audio && !audio.paused) {
-        clearInterval(fadeTimer);
-        audio.pause();
-        setIcon('play');
-        widget.classList.remove('is-playing');
-      }
-      document.body.classList.add('works-open');
-      worksPage.setAttribute('aria-hidden', 'false');
-    }
-    function closeWorks() {
-      document.body.classList.remove('works-open');
-      worksPage.setAttribute('aria-hidden', 'true');
-    }
-    document.querySelector('.work-logo').addEventListener('click', openWorks);
-    document.getElementById('worksBackLeft').addEventListener('click', closeWorks);
-    document.getElementById('worksBackRight').addEventListener('click', closeWorks);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeWorks();
-    });
-    if (window.TRACK_INFO && document.getElementById('track-title')) {
-      document.getElementById('track-title').textContent = window.TRACK_INFO.title;
-      document.getElementById('track-artist').textContent = window.TRACK_INFO.artist;
-    }
-    const audio = document.getElementById('music-audio');
-    if (audio) {
-    const TARGET_VOLUME = 0.05;
-    const FADE_IN_MS = 2000;
-    audio.volume = 0;
-    let fadeTimer = null;
-    const btn = document.querySelector('.music-btn');
-    const widget = document.querySelector('.music-widget');
-    const icon = document.querySelector('.music-icon');
-    const cur = document.getElementById('track-cur');
-    const dur = document.getElementById('track-dur');
-    const bar = document.getElementById('track-bar');
-    const fill = document.getElementById('track-fill');
-    function fmt(t) {
-      if (!isFinite(t)) return '0:00';
-      t = Math.floor(t);
-      return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0');
-    }
-    function setIcon(name) {
-      icon.style.webkitMaskImage = "url('mus/" + name + ".svg')";
-      icon.style.maskImage = "url('mus/" + name + ".svg')";
-    }
-    function fadeIn() {
-      clearInterval(fadeTimer);
-      const step = TARGET_VOLUME / (FADE_IN_MS / 50);
-      fadeTimer = setInterval(() => {
-        if (audio.volume + step >= TARGET_VOLUME) {
-          audio.volume = TARGET_VOLUME;
-          clearInterval(fadeTimer);
-        } else {
-          audio.volume += step;
-        }
-      }, 50);
-    }
-    function startPlayback() {
-      audio.volume = 0;
-      let p;
-      try { p = audio.play(); } catch (e) { return; }
-      if (p && p.then) {
-        p.then(() => {
-          setIcon('pause');
-          widget.classList.add('is-playing');
-          fadeIn();
-        }).catch(() => {});
-      } else {
-        setIcon('pause');
-        widget.classList.add('is-playing');
-        fadeIn();
-      }
-    }
-    btn.addEventListener('click', () => {
-      clearInterval(fadeTimer);
-      if (audio.paused) {
-        startPlayback();
-      } else {
-        audio.pause();
-        setIcon('play');
-        widget.classList.remove('is-playing');
-      }
-    });
-    audio.addEventListener('loadedmetadata', () => {
-      dur.textContent = fmt(audio.duration);
-    });
-    audio.addEventListener('timeupdate', () => {
-      cur.textContent = fmt(audio.currentTime);
-      if (audio.duration) {
-        fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
-      }
-    });
-    bar.addEventListener('click', (e) => {
-      if (!audio.duration) return;
-      const r = bar.getBoundingClientRect();
-      audio.currentTime = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1) * audio.duration;
-    });
-    audio.addEventListener('ended', () => {
-      setIcon('play');
-      widget.classList.remove('is-playing');
-    });
-    }
-  </script>
-
+  <script src="js/carousel.js?v=20261104-59"></script>
+  <script src="js/weather.js?v=20261104-59"></script>
 </body>
 </html>

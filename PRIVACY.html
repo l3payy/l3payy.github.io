@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Политика конфиденциальности — Focus</title>
+<meta name="description" content="How Focus handles local data, favicons, search, optional tabs and Google Drive backups.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; --bg:#191919; --panel:#232323; --line:#3B3B3B; --text:#FFFFFF; --muted:#B3B3B3; --accent:#FFD3E0; }
+  * { box-sizing:border-box; }
+  html { background:#000; }
+  html, body { margin:0; min-height:100%; color:var(--text); font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+  body {
+    line-height:1.65;
+    background-color:#000;
+    background-image:
+      linear-gradient(rgba(0,0,0,.64), rgba(0,0,0,.64)),
+      url('bg/sun.jpg');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+  }
+  a { color:var(--accent); text-underline-offset:3px; }
+  .wrap {
+    position:relative;
+    z-index:1;
+    width:min(920px, calc(100% - 40px));
+    margin:32px auto 64px;
+    padding:36px 42px 48px;
+    background:rgba(16,16,16,.72);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+  }
+  .back {
+    position:fixed;
+    top:18px;
+    left:18px;
+    z-index:10;
+    display:inline-flex;
+    align-items:center;
+    min-height:36px;
+    padding:0 14px;
+    border-radius:12px;
+    background:rgba(227,227,227,.08);
+    border:1px solid rgba(255,255,255,.1);
+    color:rgba(255,255,255,.78);
+    text-decoration:none;
+    font-family:"Unbounded", system-ui, sans-serif;
+    font-size:12px;
+    font-weight:600;
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    transition:color .2s ease, background .2s ease;
+  }
+  .back:hover { color:#fff; background:rgba(227,227,227,.14); }
+  header { display:flex; align-items:center; gap:14px; padding:12px 0 28px; }
+  .mark { width:42px; height:42px; border-radius:13px; display:grid; place-items:center; background:var(--panel); border:1px solid var(--line); font-weight:800; font-size:21px; color:var(--accent); }
+  .brand { font-family:"Unbounded", system-ui, sans-serif; font-size:21px; font-weight:800; letter-spacing:-0.02em; }
+  .brand small { display:block; font-family:Inter, system-ui, sans-serif; font-size:12px; font-weight:500; color:var(--muted); letter-spacing:0; }
+  h1 { font-family:"Unbounded", system-ui, sans-serif; font-size:clamp(30px, 5vw, 46px); line-height:1.08; letter-spacing:-0.04em; margin:8px 0 10px; }
+  h2 { font-family:"Unbounded", system-ui, sans-serif; font-size:21px; letter-spacing:-0.02em; margin:34px 0 10px; }
+  h3 { font-size:17px; margin:22px 0 6px; }
+  p, li { color:var(--muted); }
+  .updated { color:var(--muted); font-size:14px; }
+  .note { border-left:3px solid var(--accent); padding:14px 16px; background:var(--panel); border-radius:0 12px 12px 0; margin:18px 0; }
+  code { color:var(--text); background:var(--panel); padding:2px 6px; border-radius:6px; }
+  footer { margin-top:42px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+  ul { padding-left:22px; }
+  @media (max-width: 640px) {
+    .wrap { width:calc(100% - 24px); margin:18px auto 32px; padding:24px 20px 32px; border-radius:18px; }
+    .back { top:12px; left:12px; }
+    h1 { font-size:30px; }
+    h2 { font-size:19px; }
+  }
+</style>
+</head>
+<body>
+<a class="back" href="index.html">← Назад</a>
+<div class="wrap">
+  <header>
+    <div class="mark" aria-hidden="true">F</div>
+    <div class="brand">Focus <small>Privacy Policy</small></div>
+  </header>
+
+  <main>
+    <h1>Privacy Policy — Focus</h1>
+    <p class="updated">Last updated: 4 November 2026</p>
+
+    <p>Focus is a Chrome extension that replaces the browser's new tab page with sites, folders, themes, a Cloud board, and optional Google Drive backups. This policy explains what data Focus uses, where it is stored, and how you can delete it.</p>
+
+    <div class="note">
+      <p><strong>Summary:</strong> Focus has no developer servers, analytics, advertising or tracking. Your content is stored locally in your browser. The only optional data that leaves your device is an encrypted-in-transit backup ZIP that you explicitly create in your own Google Drive, plus favicon and search requests described below.</p>
+    </div>
+
+    <h2>1. Data stored on your device</h2>
+    <p>Focus stores the following data locally in your browser profile:</p>
+    <ul>
+      <li>links, folders, site names and their order (localStorage);</li>
+      <li>Cloud board images (IndexedDB) and Cloud board notes and drawings (localStorage);</li>
+      <li>background images and videos you add (IndexedDB);</li>
+      <li>favicon cache (Cache Storage);</li>
+      <li>settings such as theme, search provider, mail link and toggles (localStorage).</li>
+    </ul>
+    <p>The developer does not receive this data. It remains in your browser until you delete it, clear the extension's storage, or uninstall Focus. Uninstalling the extension removes its local storage with your browser profile.</p>
+
+    <h2>2. Google Drive backups (optional)</h2>
+    <p>Focus can create a backup only when you explicitly press <strong>“Create a new backup”</strong> in Focus settings. On that action:</p>
+    <ul>
+      <li>Focus requests a Google OAuth token through Chrome Identity using the <code>https://www.googleapis.com/auth/drive.appdata</code> scope;</li>
+      <li>Focus builds a ZIP archive containing your Focus settings, links, folders, background images and Cloud board content (images, notes and drawings);</li>
+      <li>the archive is uploaded to the hidden <code>appDataFolder</code> of <strong>your own Google Drive account</strong>;</li>
+      <li>Focus keeps up to three backups and can list, download, restore and delete them from the Backups settings panel.</li>
+    </ul>
+    <p>Focus does not read, edit, create or delete any other Google Drive files. The developer has no access to your Google Drive, your OAuth token, or the contents of your backups. Google processes the data in your Drive under Google's own privacy policy.</p>
+    <p>You can delete individual backups in Focus settings, or revoke Focus's access at any time at <a href="https://myaccount.google.com/permissions" rel="noopener">myaccount.google.com/permissions</a>. Revoking access stops future backups; existing backup files can be removed from Focus settings before revoking, or by deleting the extension's app data through your Google Account controls.</p>
+
+    <h2>3. Network requests</h2>
+    <p>Focus uses the network only for the following purposes:</p>
+    <h3>Favicons</h3>
+    <p>When you add a site, Focus requests its icon from <code>favicon.yandex.net</code>; if Yandex has no usable icon, Focus falls back to <code>icons.duckduckgo.com</code>. The request contains the domain of the site you added. Icons are cached locally and normally served from that cache, including offline. A cache miss or refresh can request the icon again. On startup, Focus may warm the cache for the first visible tiles, which can cause a favicon request for an uncached domain.</p>
+    <h3>Search</h3>
+    <p>When you submit a search, the query is sent to your browser's default search engine through the Chrome Search API (the Standard option), or to Google/Yandex if you explicitly selected that provider for a space. The query is handled under that search provider's privacy policy.</p>
+    <h3>Google Drive</h3>
+    <p>Google Drive API requests are made only when you create, list, restore or delete a backup. The request goes to <code>www.googleapis.com</code> with your OAuth token. No browsing history, page contents, analytics or advertising identifiers are sent.</p>
+
+    <h2>4. Permissions</h2>
+    <ul>
+      <li><code>unlimitedStorage</code> — prevents the browser from evicting your images and caches under storage pressure;</li>
+      <li><code>search</code> — search through the Chrome Search API with your browser's default engine;</li>
+      <li><code>contextMenus</code> — adds the “Save to Focus plus” link action; the link URL is read only when you click it;</li>
+      <li><code>storage</code> — internal queue for links saved from that context menu;</li>
+      <li><code>identity</code> — Google sign-in only for optional backups to your own Google Drive; no profile data is read or stored;</li>
+      <li><code>tabs</code> (optional) — requested only when you choose “Open tabs”; reads URLs and titles of open tabs to save new links locally in Focus+. Service pages and duplicates are skipped. Nothing is sent to the developer;</li>
+      <li>host access to <code>favicon.yandex.net</code> and <code>icons.duckduckgo.com</code> — favicon download only.</li>
+    </ul>
+    <p>Focus does not request host access to Google Drive. Google Drive API calls use the OAuth token and Google's CORS policy.</p>
+
+    <h2>5. Data sharing and sale</h2>
+    <p>Focus does not sell, rent, trade or share personal data with advertisers, data brokers or other third parties. The developer does not operate servers that receive your content. Google Drive storage is provided by Google in your own account; Google acts as the infrastructure provider for that feature.</p>
+
+    <h2>6. Google API Services User Data Policy</h2>
+    <div class="note">
+      <p>Focus's use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+      <p>Focus complies with the <a href="https://developers.google.com/terms" rel="noopener">Google APIs Terms of Service</a>. Focus does not use Google APIs, including the Google Drive API, to create, generate or distribute AI-generated non-consensual intimate imagery (NCI).</p>
+    </div>
+
+    <h2>7. Data retention and deletion</h2>
+    <ul>
+      <li>Local data remains until you delete it in Focus, clear the extension's storage, or uninstall the extension.</li>
+      <li>Google Drive backups remain in your own Drive until you delete them in Focus settings or remove the app's data through your Google Account. Focus keeps at most three backups.</li>
+      <li>You can revoke OAuth access at any time at <a href="https://myaccount.google.com/permissions" rel="noopener">myaccount.google.com/permissions</a>.</li>
+      <li>For deletion questions, contact <a href="mailto:lepayy@bk.ru">lepayy@bk.ru</a>.</li>
+    </ul>
+
+    <h2>8. Children</h2>
+    <p>Focus is not directed to children under 13 and does not knowingly collect personal information from children. The extension has no developer-side accounts or data collection.</p>
+
+    <h2>9. Changes</h2>
+    <p>If this policy changes, the updated text will be published on this page and will ship with the next extension update. The “Last updated” date at the top will be changed.</p>
+
+    <h2>10. Contact</h2>
+    <p>Focus developer: lepayy. Email: <a href="mailto:lepayy@bk.ru">lepayy@bk.ru</a>. GitHub: <a href="https://github.com/l3payy/Focus">github.com/l3payy/Focus</a>.</p>
+
+    <hr style="border:0;border-top:1px solid var(--line);margin:34px 0">
+
+    <h2 lang="ru">Кратко по-русски</h2>
+    <div lang="ru">
+      <p>Focus не имеет собственных серверов, аналитики, рекламы и трекинга. Ссылки, папки, фоны, заметки, рисунки и настройки хранятся только в вашем браузере. При добавлении сайта домен отправляется сервису иконок Yandex, при отсутствии иконки — DuckDuckGo; иконки кешируются локально. Поисковые запросы уходят в поисковую систему браузера по умолчанию или в явно выбранный Google/Яндекс.</p>
+      <p>По вашему явному действию «Создать новый бекап» Focus запрашивает OAuth-токен с доступом <code>drive.appdata</code> и загружает ZIP с настройками, ссылками, фонами и содержимым Облачков (картинки, заметки, рисунки) в скрытую папку <code>appDataFolder</code> вашего собственного Google Drive. Focus не читает и не изменяет другие файлы Drive; разработчик не имеет доступа к вашему Drive и архиву. Хранится до трёх бекапов; их можно удалить в настройках, а доступ отозвать в аккаунте Google. Данные не продаются и не передаются рекламным сетям. Контакт: lepayy@bk.ru.</p>
+    </div>
+  </main>
+
+  <footer>
+    Focus is an independent Chrome extension. Google Drive is a service of Google. This page is public and does not require a login.
+  </footer>
+</div>
+</body>
+</html>

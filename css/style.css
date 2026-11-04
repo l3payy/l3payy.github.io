@@ -1,0 +1,376 @@
+﻿/* ─────────────────────────────────────────────────────────
+   Portfolio — glass shelf with a plain backdrop blur.
+
+   No WebGL: each card is just a frosted panel
+   (`backdrop-filter: blur(6px)` + a slight white tint).
+   ───────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* No scrollbars anywhere. */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── root: full-screen scene ────────────────────────────── */
+
+#root {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  cursor: default;
+  touch-action: none;
+  user-select: none;
+}
+
+/* Background photo. Not interactive: every gesture belongs to
+   the carousel (the drag is handled on #root). */
+.bg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Incoming background used for the crossfade. */
+.bg--overlay {
+  opacity: 0;
+  transition: opacity 1.1s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg--overlay {
+    transition: none;
+  }
+}
+
+/* 14% black veil over the photo. */
+.veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.14);
+  pointer-events: none;
+}
+
+/* ── hero title + subtitle ──────────────────────────────── */
+
+.hero {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.hero-title {
+  margin: 0;
+  color: #ffffff;
+  font-family: "Unbounded", system-ui, "Segoe UI", sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.hero-subtitle {
+  margin: 0;
+  color: #ffffff;
+  opacity: 0.6;
+  font-family: "Unbounded", system-ui, "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0;
+}
+
+/* ── weather widget ─────────────────────────────────────── */
+
+/* Rock within the widget's own assigned tilt. */
+@keyframes weather-rock {
+  0%, 100% { rotate: var(--tilt, 0deg); }
+  50% { rotate: calc(var(--tilt, 0deg) * -1); }
+}
+
+/* Gentle bob, weaker than the cards (±2px, 8s). */
+@keyframes weather-bob {
+  0%, 100% { translate: 0 -2px; }
+  50% { translate: 0 2px; }
+}
+
+.weather-scale {
+  position: absolute;
+  right: 28px;
+  bottom: 28px;
+  z-index: 10;
+  width: 240px;
+  height: 55px;
+  transform-origin: 100% 100%;
+  transition: transform 0.3s ease;
+  pointer-events: auto;
+}
+
+.weather-scale:hover {
+  transform: scale(1.18);
+}
+
+.weather {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  rotate: var(--tilt, 0deg);
+  transform-origin: 50% 50%;
+  animation:
+    weather-rock var(--rock-dur, 9s) ease-in-out infinite,
+    weather-bob 8s ease-in-out infinite;
+  pointer-events: none;
+  will-change: rotate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .weather {
+    animation: none;
+  }
+}
+
+/* Same effect as the cards, just a 24px radius. */
+.weather.glass-effect {
+  border-radius: 24px;
+}
+
+.weather__icon {
+  flex: 0 0 39px;
+  width: 39px;
+  height: 39px;
+  display: block;
+  object-fit: contain;
+  transition: opacity 0.35s ease;
+}
+
+/* Neutral, slightly dimmed icon while the location is loading. */
+.weather.is-loading .weather__icon {
+  opacity: 0.35;
+}
+
+.weather__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+  height: 39px;
+  min-width: 0;
+}
+
+.weather__place {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  height: 12px;
+  min-width: 0;
+  opacity: 0.5;
+  color: #ffffff;
+  font-family: "Unbounded", system-ui, "Segoe UI", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.weather__place-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.weather__point {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.weather__state {
+  display: flex;
+  align-items: center;
+  height: 25px;
+  color: #ffffff;
+  font-family: "Unbounded", system-ui, "Segoe UI", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  transition: opacity 0.35s ease;
+}
+
+/* Faint shimmer while the IP location and weather are loading. */
+@keyframes weather-shimmer {
+  0% { background-position: 120% 0; }
+  100% { background-position: -120% 0; }
+}
+
+.weather__state--loading {
+  color: transparent;
+  background-image: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.34) 24%,
+    rgba(255, 255, 255, 0.92) 42%,
+    rgba(255, 255, 255, 0.34) 60%
+  );
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: weather-shimmer 2.1s linear infinite;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .weather__state--loading {
+    animation: none;
+    background: none;
+    color: rgba(255, 255, 255, 0.55);
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+/* ── 360×282 frosted cards ──────────────────────────────── */
+
+.card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 440px;
+  height: 345px;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+/* Cards with a link show a pointer on hover. */
+.card[data-href] {
+  cursor: pointer;
+}
+
+/* ── Standard glass "Effect" ──────────────────────────────
+   Reusable on any element:
+   Fill    #E3E3E3 @ 20%
+   Inner   X 0 · Y 0 · Blur 14 · Spread 0 · #FFFFFF @ 40%
+   Stroke  Center · 4px · #FFFFFF @ 8%
+   Blur    6px
+   ───────────────────────────────────────────────────────── */
+.glass-effect {
+  border-radius: 28px;
+  background: rgba(227, 227, 227, 0.2);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.08),
+    0 0 0 2px rgba(255, 255, 255, 0.08),
+    inset 0 0 14px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Image card: inset 8px, its own 22px radius, crisp. */
+.card__image {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: block;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  object-fit: cover;
+  border-radius: 22px;
+  pointer-events: none;
+}
+
+/* Privacy link: small glass pill in the lower-left corner. */
+.privacy-link {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 13px;
+  border-radius: 12px;
+  background: rgba(227, 227, 227, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: rgba(255, 255, 255, 0.68);
+  font-family: "Unbounded", system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 180ms ease, background 180ms ease;
+}
+
+.privacy-link:hover {
+  color: #ffffff;
+  background: rgba(227, 227, 227, 0.16);
+}
+
+@media (max-width: 640px) {
+  .privacy-link {
+    left: 12px;
+    bottom: 12px;
+    min-height: 32px;
+    padding: 0 11px;
+    font-size: 9px;
+  }
+}
