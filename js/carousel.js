@@ -5,8 +5,9 @@
    gap between them. The row is endless: as you drag, cards
    slide off one screen edge and come back from the other.
 
-   Movement is smoothed: the rendered position eases toward a
-   target every frame, so drag and settle both feel fluid.
+   Movement: drag follows with a short ease; card-to-card moves
+   use a quick ease-out that finishes exactly on target, so the
+   row never ends with a visible pixel jump.
 
    Depth: the centred card is full size, cards further from the
    centre shrink down to MIN_SCALE.
@@ -67,6 +68,11 @@
   const CARD_H = 345;
   const GAP = 16;
   const STEP = CARD_W + GAP;
+
+  /* Only the outer cards are pulled inward. The centred card and
+     its immediate neighbours keep their original spacing. */
+  const WARP_EASE = 200;
+  const WARP_COMPRESS = 0.75;
   const N = CARDS.length;
   const PERIOD = STEP * N;
   const IMAGE_INDEX = 0;
@@ -77,11 +83,15 @@
   const MOST = 1;       // max cards a flick can skip
   const SMOOTH = 0.16;  // per-frame ease toward the target
 
-  /* Wheel needs several notches per card and glides slowly. */
+  /* Programmatic card-to-card travel: a slower ease-out that
+     comes to rest exactly on the target. */
+  const MOVE_MS_BASE = 280;
+  const MOVE_MS_PER_PX = 0.22;
+  const MOVE_MS_MAX = 620;
+
+  /* Wheel needs several notches per card. */
   const WHEEL_STEP = 300;
   const WHEEL_GAP = 140;
-  const WHEEL_SMOOTH = 0.07;
-  const WHEEL_SLOW_MS = 700;
 
   /* Strong depth shrink: centred card 1.0 → sides MIN_SCALE. */
   const MIN_SCALE = 0.58;
@@ -101,8 +111,9 @@
   const HOVER_MS = 300;
 
   const root = document.getElementById("root");
+  const weatherEl = document.getElementById("weather");
   const still = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
-  const startTime = performance.now();
+  const startTime = 0;
 
   const cards = [];
   const hoverScale = new Array(N).fill(1);
@@ -112,15 +123,20 @@
   const hoverDir = new Array(N).fill(1);
   let position = IMAGE_INDEX * STEP + CARD_W / 2;
   let target = position;
+  let motion = null;
   let drag = null;
   let raf = 0;
+  let animTime = 0;
+  let lastFrameTime = 0;
+  let windowFocused = true;
+  let heldAnimations = [];
   let wheelAccum = 0;
   let wheelLast = 0;
-  let slowUntil = 0;
   let pointerX = 0;
   let pointerY = 0;
   let pointerInside = false;
   let hoveredIndex = -1;
+  let weatherTilt = null;
 
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
   const mod = (v, n) => ((v % n) + n) % n;
@@ -205,6 +221,20 @@
 
   const centerOf = (i) => i * STEP + CARD_W / 2;
 
+  /* Pull only cards beyond the immediate neighbours toward the
+     centre, so the next pair peeks in at the screen edges. */
+  function visualX(x) {
+    const a = Math.abs(x);
+    if (a <= STEP) return x;
+
+    const d = a - STEP;
+    const t = clamp(d / WARP_EASE, 0, 1);
+    const ease = t * t * (3 - 2 * t);
+    const k = 1 + (WARP_COMPRESS - 1) * ease;
+
+    return Math.sign(x) * (STEP + d * k);
+  }
+
   function scaleFor(x) {
     const t = clamp(Math.abs(x) / SCALE_FALLOFF, 0, 1);
     const eased = t * t * (3 - 2 * t); // smoothstep
@@ -223,7 +253,7 @@
 
   /* Ease every card's hover zoom back to 1. */
   function clearHover() {
-    const at = performance.now();
+    const at = animTime;
     for (let i = 0; i < N; i += 1) {
       hoverFrom[i] = hoverScale[i];
       hoverTarget[i] = 1;
@@ -231,10 +261,37 @@
     }
   }
 
+  /* The weather pill uses the same clock as the carousel, so it
+     freezes and resumes together with the cards. */
+  function paintWeather(now) {
+    if (!weatherEl || still) return;
+
+    if (weatherTilt === null) {
+      const raw = weatherEl.dataset.tilt;
+      if (raw === undefined) return;
+      const value = Number(raw);
+      weatherTilt = Number.isFinite(value) ? value : 0;
+    }
+
+    const amp = Math.abs(weatherTilt);
+    const maxOmega = (Math.PI * 2) / ROCK_MIN_PERIOD;
+    const omega = amp > 0.0001 ? Math.min(ROCK_SPEED / amp, maxOmega) : 0;
+    const phaseOffset = weatherTilt > 0 ? Math.PI / 2 : -Math.PI / 2;
+    const rock = Math.sin((now / 1000) * omega + phaseOffset) * amp;
+    const bob = Math.sin((now / 1000) * ((Math.PI * 2) / 8)) * 2;
+
+    weatherEl.style.transform =
+      `translateY(${bob.toFixed(2)}px) ` +
+      `rotate(${rock.toFixed(3)}deg)`;
+  }
+
   function paint(now) {
+    paintWeather(now);
+
     for (let i = 0; i < N; i += 1) {
       let x = centerOf(i) - position;
       x = mod(x + PERIOD / 2, PERIOD) - PERIOD / 2;
+      x = visualX(x);
 
       const base = scaleFor(x);
 
@@ -335,6 +392,7 @@
     for (let i = 0; i < N; i += 1) {
       let x = centerOf(i) - position;
       x = mod(x + PERIOD / 2, PERIOD) - PERIOD / 2;
+      x = visualX(x);
 
       const base = scaleFor(x);
       const sx = cx + x;
@@ -353,27 +411,45 @@
     return best;
   }
 
-  /* ── smooth follow loop (+ slow vertical drift) ───────── */
+  /* ── motion loop (+ slow vertical drift) ──────────────── */
 
-  function frame(now) {
-    const diff = target - position;
+  function frame(rawNow) {
+    if (document.hidden || !windowFocused) {
+      raf = 0;
+      return;
+    }
 
-    if (Math.abs(diff) > 0.3) {
-      const k = now < slowUntil ? WHEEL_SMOOTH : SMOOTH;
-      position += diff * k;
+    const delta = Math.min(64, Math.max(0, rawNow - lastFrameTime));
+    lastFrameTime = rawNow;
+    animTime += delta;
+    const now = animTime;
+
+    if (motion) {
+      const p = clamp((now - motion.start) / motion.duration, 0, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      position = motion.from + (motion.to - motion.from) * eased;
+
+      if (p >= 1) {
+        position = motion.to;
+        motion = null;
+      }
+    } else if (drag) {
+      const diff = target - position;
+      if (Math.abs(diff) > 0.01) position += diff * SMOOTH;
+      else position = target;
     } else {
       position = target;
     }
 
     /* Keep the hover on the card actually under the pointer. */
-    if (!drag && pointerInside && Math.abs(target - position) < 0.5) {
+    if (!drag && !motion && pointerInside) {
       const idx = hoveredCardIndex(pointerX, pointerY);
 
       if (idx !== hoveredIndex) {
         hoveredIndex = idx;
         freezeHoverDir();
 
-        const at = performance.now();
+        const at = now;
         for (let i = 0; i < N; i += 1) {
           hoverFrom[i] = hoverScale[i];
           hoverTarget[i] = i === idx ? HOVER_SCALE : 1;
@@ -386,13 +462,85 @@
     raf = requestAnimationFrame(frame);
   }
 
+  function startLoop() {
+    if (still || raf || document.hidden || !windowFocused) return;
+    lastFrameTime = performance.now();
+    raf = requestAnimationFrame(frame);
+  }
+
+  function pageIsPaused() {
+    return document.hidden || !windowFocused;
+  }
+
+  function pauseAnimations() {
+    if (!heldAnimations.length) {
+      heldAnimations = document.getAnimations().filter(
+        (animation) => animation.playState === "running",
+      );
+    }
+
+    document.documentElement.classList.add("is-paused");
+
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+
+    heldAnimations.forEach((animation) => {
+      try {
+        animation.pause();
+      } catch {
+        /* animation may have finished */
+      }
+    });
+  }
+
+  function resumeAnimations() {
+    if (pageIsPaused()) return;
+
+    document.documentElement.classList.remove("is-paused");
+
+    heldAnimations.forEach((animation) => {
+      try {
+        if (animation.playState === "paused") animation.play();
+      } catch {
+        /* animation may be gone */
+      }
+    });
+    heldAnimations = [];
+
+    startLoop();
+  }
+
+  function syncPause() {
+    if (pageIsPaused()) pauseAnimations();
+    else resumeAnimations();
+  }
+
   function setTarget(next) {
     target = next;
 
     if (still) {
       position = target;
-      paint(performance.now());
+      motion = null;
+      paint(animTime);
+      return;
     }
+
+    /* While dragging the card follows the finger; the smooth
+       arrival starts on release. */
+    if (drag) {
+      motion = null;
+      return;
+    }
+
+    const now = animTime;
+    const distance = Math.abs(target - position);
+    const duration = clamp(
+      MOVE_MS_BASE + distance * MOVE_MS_PER_PX,
+      MOVE_MS_BASE,
+      MOVE_MS_MAX,
+    );
+
+    motion = { from: position, to: target, start: now, duration };
   }
 
   function go(direction) {
@@ -423,7 +571,6 @@
     /* Ease the hover zoom down smoothly, but freeze its direction
        for the whole gesture so the centre crossing stays smooth. */
     freezeHoverDir();
-    slowUntil = 0;
     clearHover();
 
     drag = {
@@ -553,7 +700,6 @@
 
       wheelAccum = 0;
       wheelLast = now;
-      slowUntil = now + WHEEL_SLOW_MS;
 
       if (Math.abs(target - position) < 1) freezeHoverDir();
       hoveredIndex = -1;
@@ -563,11 +709,20 @@
     { passive: false },
   );
 
-  window.addEventListener("resize", () => paint(performance.now()), { passive: true });
+  window.addEventListener("resize", () => paint(animTime), { passive: true });
 
-  paint(performance.now());
+  document.addEventListener("visibilitychange", syncPause);
 
-  if (!still) {
-    raf = requestAnimationFrame(frame);
-  }
+  window.addEventListener("blur", () => {
+    windowFocused = false;
+    syncPause();
+  });
+
+  window.addEventListener("focus", () => {
+    windowFocused = true;
+    syncPause();
+  });
+
+  paint(animTime);
+  syncPause();
 })();
