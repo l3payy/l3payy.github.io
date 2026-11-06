@@ -20,39 +20,42 @@
 (() => {
   "use strict";
 
+  /* Bump when replacing card images (cache-busting). */
+  const IMG_VERSION = "20261106-03";
+
   const CARDS = [
     {
-      image: "cardImages/arenda.webp",
+      image: `cardImages/arenda.webp?v=${IMG_VERSION}`,
       alt: "Баннеры для Мир Аренды",
       href: "https://www.behance.net/gallery/246954043/banery-dlja-mir-arendy",
     },
     {
-      image: "cardImages/aukus4.webp",
+      image: `cardImages/aukus4.webp?v=${IMG_VERSION}`,
       alt: "Aukus 2024 Twitch Event",
       href: "https://www.behance.net/gallery/207948175/AUKUS-2024-Twitch-Event",
     },
     {
-      image: "cardImages/aukus5.png",
+      image: `cardImages/aukus5.png?v=${IMG_VERSION}`,
       alt: "Aukus 5",
       href: "https://www.behance.net/gallery/251106079/aukus-5",
     },
     {
-      image: "cardImages/gonkus.webp",
+      image: `cardImages/gonkus.webp?v=${IMG_VERSION}`,
       alt: "Gonkus",
       href: "https://www.behance.net/gallery/246950545/GONKUS",
     },
     {
-      image: "cardImages/igropolius.webp",
+      image: `cardImages/igropolius.webp?v=${IMG_VERSION}`,
       alt: "Igropolius Twitch Event",
       href: "https://www.behance.net/gallery/224537291/igropolius-tvich-ivent",
     },
     {
-      image: "cardImages/reyohoho.webp",
+      image: `cardImages/reyohoho.webp?v=${IMG_VERSION}`,
       alt: "Альманах ReYohoho",
       href: "https://www.behance.net/gallery/254336243/almanah-ReYohoho",
     },
     {
-      image: "cardImages/sport.webp",
+      image: `cardImages/sport.webp?v=${IMG_VERSION}`,
       alt: "Сайт пошива спортивной одежды",
       href: "https://www.behance.net/gallery/225411105/sajt-poshiva-sportivnoj-odezhdy-(2021)",
     },
@@ -112,6 +115,8 @@
 
   const root = document.getElementById("root");
   const weatherEl = document.getElementById("weather");
+  const profileEl = document.getElementById("profile");
+  const socialEls = [...document.querySelectorAll(".social-btn")];
   const still = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   const startTime = 0;
 
@@ -137,6 +142,34 @@
   let pointerInside = false;
   let hoveredIndex = -1;
   let weatherTilt = null;
+
+  /* Profile pill: same -5°..+5° tilt as the weather pill. */
+  let profileTilt = null;
+  if (profileEl) {
+    do {
+      profileTilt = (Math.random() * 2 - 1) * 5;
+    } while (Math.abs(profileTilt) < 0.05);
+    profileEl.dataset.tilt = profileTilt.toFixed(3);
+    profileEl.style.transform = `rotate(${profileTilt.toFixed(2)}deg)`;
+  }
+
+  /* Each social button gets its own tilt (-3°..+3°, never 0),
+     just like the weather pill gets -5°..+5°. */
+  const socialTilts = socialEls.map(() => {
+    let a;
+    do {
+      a = (Math.random() * 2 - 1) * 3;
+    } while (Math.abs(a) < 0.05);
+    return a;
+  });
+  socialEls.forEach((el, i) => {
+    el.dataset.tilt = socialTilts[i].toFixed(3);
+    el.style.transform = `rotate(${socialTilts[i].toFixed(2)}deg)`;
+  });
+
+  /* Different bob periods + phase offsets so the three buttons
+     never float up-down in sync. */
+  const SOCIAL_BOB_PERIODS = [7.1, 8.3, 6.4];
 
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
   const mod = (v, n) => ((v % n) + n) % n;
@@ -285,8 +318,49 @@
       `rotate(${rock.toFixed(3)}deg)`;
   }
 
+  /* Social buttons rock within their own tilt, same slow angular
+     speed as cards/weather, and bob with different periods. */
+  function paintSocials(now) {
+    if (!socialEls.length || still) return;
+
+    for (let i = 0; i < socialEls.length; i += 1) {
+      const tilt = socialTilts[i];
+      const amp = Math.abs(tilt);
+      const maxOmega = (Math.PI * 2) / ROCK_MIN_PERIOD;
+      const omega = amp > 0.0001 ? Math.min(ROCK_SPEED / amp, maxOmega) : 0;
+      const phaseOffset = tilt > 0 ? Math.PI / 2 : -Math.PI / 2;
+      const rock = Math.sin((now / 1000) * omega + phaseOffset) * amp;
+
+      const period = SOCIAL_BOB_PERIODS[i % SOCIAL_BOB_PERIODS.length];
+      const phase = (i * Math.PI * 2) / 3;
+      const bob = Math.sin((now / 1000) * ((Math.PI * 2) / period) + phase) * 2;
+
+      socialEls[i].style.transform =
+        `translateY(${bob.toFixed(2)}px) ` +
+        `rotate(${rock.toFixed(3)}deg)`;
+    }
+  }
+
+  /* Profile pill: same motion as the weather pill. */
+  function paintProfile(now) {
+    if (!profileEl || still || profileTilt === null) return;
+
+    const amp = Math.abs(profileTilt);
+    const maxOmega = (Math.PI * 2) / ROCK_MIN_PERIOD;
+    const omega = amp > 0.0001 ? Math.min(ROCK_SPEED / amp, maxOmega) : 0;
+    const phaseOffset = profileTilt > 0 ? Math.PI / 2 : -Math.PI / 2;
+    const rock = Math.sin((now / 1000) * omega + phaseOffset) * amp;
+    const bob = Math.sin((now / 1000) * ((Math.PI * 2) / 8)) * 2;
+
+    profileEl.style.transform =
+      `translateY(${bob.toFixed(2)}px) ` +
+      `rotate(${rock.toFixed(3)}deg)`;
+  }
+
   function paint(now) {
     paintWeather(now);
+    paintSocials(now);
+    paintProfile(now);
 
     for (let i = 0; i < N; i += 1) {
       let x = centerOf(i) - position;
@@ -562,6 +636,7 @@
 
   root.addEventListener("pointerdown", (event) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    if (event.target.closest?.(".socials")) return;
 
     pointerX = event.clientX;
     pointerY = event.clientY;

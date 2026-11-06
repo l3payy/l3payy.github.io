@@ -21,19 +21,14 @@
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261104-71">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20261106-09">
 </head>
 <body>
   <div id="root">
     <img class="bg" src="bg/sun.jpg?v=4" alt="" draggable="false">
     <img class="bg bg--overlay" src="bg/sun.jpg?v=4" alt="" aria-hidden="true" draggable="false">
     <div class="veil" aria-hidden="true"></div>
-
-    <div class="hero">
-      <h1 class="hero-title">Привет, я Дима</h1>
-      <p class="hero-subtitle">в 2008 бог изгнал нас из фрутигер аеро,<br>я приглашаю вас обратно</p>
-    </div>
 
     <div class="weather-scale">
       <div class="weather glass-effect is-loading" id="weather" aria-live="polite" aria-busy="true">
@@ -47,9 +42,31 @@
         </div>
       </div>
     </div>
+
+    <div class="socials" aria-label="Соцсети">
+      <div class="social-btn-scale">
+        <a class="social-btn glass-effect" href="https://t.me/msvxdlss" target="_blank" rel="noopener" aria-label="Telegram"><img src="social/telegram.svg" alt=""></a>
+      </div>
+      <div class="social-btn-scale">
+        <a class="social-btn glass-effect" href="https://github.com/l3payy" target="_blank" rel="noopener" aria-label="GitHub"><img src="social/github.svg" alt=""></a>
+      </div>
+      <div class="social-btn-scale">
+        <a class="social-btn glass-effect" href="https://www.behance.net/lepayy" target="_blank" rel="noopener" aria-label="Behance"><img src="social/behance.svg" alt=""></a>
+      </div>
+    </div>
+
+    <div class="profile-scale">
+      <div class="profile glass-effect" id="profile">
+        <img class="profile__avatar" src="avatar.png" alt="">
+        <div class="profile__body">
+          <div class="profile__name">я Дима</div>
+          <div class="profile__role">Создаю удобные и<br>понятные интерфейсы</div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <script src="js/carousel.js?v=20261104-75"></script>
-  <script src="js/weather.js?v=20261104-75"></script>
+  <script src="js/carousel.js?v=20261106-05"></script>
+  <script src="js/weather.js?v=20261106-05"></script>
 </body>
 </html>
