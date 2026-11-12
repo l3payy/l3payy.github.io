@@ -7,7 +7,7 @@
   <meta name="description" content="Я — Дима, он же Лепай (lepayy, l3payy). Портфолио: графика, оформление Twitch-ивентов, баннеры и веб-дизайн.">
   <meta name="keywords" content="Дима, Лепай, lepayy, l3payy, msvxdlss, портфолио, дизайн, графика, Twitch, Behance">
   <meta name="author" content="Дима (Лепай)">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#0E0E0E">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://l3payy.github.io/">
   <meta property="og:type" content="website">
@@ -19,54 +19,37 @@
   <meta name="twitter:description" content="Портфолио: графика, оформление Twitch-ивентов, баннеры и веб-дизайн.">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261106-09">
+  <link rel="stylesheet" href="style.css?v=20261112-14">
 </head>
 <body>
-  <div id="root">
-    <img class="bg" src="bg/sun.jpg?v=4" alt="" draggable="false">
-    <img class="bg bg--overlay" src="bg/sun.jpg?v=4" alt="" aria-hidden="true" draggable="false">
-    <div class="veil" aria-hidden="true"></div>
+  <main class="page">
+    <img class="art" src="draw.svg" alt="" aria-hidden="true" draggable="false">
 
-    <div class="weather-scale">
-      <div class="weather glass-effect is-loading" id="weather" aria-live="polite" aria-busy="true">
-        <img class="weather__icon" id="weatherIcon" src="weatherIcon/sun.svg?v=20261104-59" alt="">
-        <div class="weather__body">
-          <div class="weather__place">
-            <img class="weather__point" src="weatherIcon/point.svg" alt="">
-            <span class="weather__place-name" id="weatherCity">Ваш город</span>
-          </div>
-          <div class="weather__state weather__state--loading" id="weatherDesc">Узнаем погоду</div>
-        </div>
-      </div>
-    </div>
+    <nav class="works" aria-label="Проекты">
+      <a class="work work--focus" href="https://chromewebstore.google.com/detail/focus/ocmkoiiknjiabbgkgkkfjdnnoblepckp" target="_blank" rel="noopener noreferrer">
+        <img src="svgText/Focus.svg" alt="Focus" draggable="false">
+        <img class="badge" src="bage.svg" alt="Magnum opus" draggable="false">
+      </a>
+      <a class="work" href="https://www.behance.net/gallery/251106079/aukus-5" target="_blank" rel="noopener noreferrer"><img src="svgText/AUKUS%205.svg" alt="Aukus 5" draggable="false"></a>
+      <a class="work" href="https://www.behance.net/gallery/254336243/almanah-ReYohoho" target="_blank" rel="noopener noreferrer"><img src="svgText/REYOHOHO%20almanach.svg" alt="ReYohoho Almanach" draggable="false"></a>
+      <a class="work" href="https://www.behance.net/gallery/246950545/GONKUS" target="_blank" rel="noopener noreferrer"><img src="svgText/GONKYS.svg" alt="Gonkys" draggable="false"></a>
+      <a class="work" href="https://www.behance.net/gallery/224537291/igropolius-tvich-ivent" target="_blank" rel="noopener noreferrer"><img src="svgText/IGROPOLIUS.svg" alt="Igropolius" draggable="false"></a>
+      <a class="work" href="https://www.behance.net/gallery/207948175/AUKUS-2024-Twitch-Event" target="_blank" rel="noopener noreferrer"><img src="svgText/AUKUS%203.svg" alt="Aukus 3" draggable="false"></a>
+      <a class="work work--mir" href="https://www.behance.net/gallery/246954043/banery-dlja-mir-arendy" target="_blank" rel="noopener noreferrer"><img src="svgText/MIR%20ARENDY%20RF.svg" alt="Mir Arendy RF" draggable="false"></a>
+      <a class="work" href="https://www.behance.net/gallery/225411105/sajt-poshiva-sportivnoj-odezhdy-(2021)" target="_blank" rel="noopener noreferrer"><img src="svgText/DIVIZION%20SPORT.svg" alt="Divizion Sport" draggable="false"></a>
+    </nav>
 
-    <div class="socials" aria-label="Соцсети">
-      <div class="social-btn-scale">
-        <a class="social-btn glass-effect" href="https://t.me/msvxdlss" target="_blank" rel="noopener" aria-label="Telegram"><img src="social/telegram.svg" alt=""></a>
-      </div>
-      <div class="social-btn-scale">
-        <a class="social-btn glass-effect" href="https://github.com/l3payy" target="_blank" rel="noopener" aria-label="GitHub"><img src="social/github.svg" alt=""></a>
-      </div>
-      <div class="social-btn-scale">
-        <a class="social-btn glass-effect" href="https://www.behance.net/lepayy" target="_blank" rel="noopener" aria-label="Behance"><img src="social/behance.svg" alt=""></a>
-      </div>
-    </div>
-
-    <div class="profile-scale">
-      <div class="profile glass-effect" id="profile">
-        <img class="profile__avatar" src="avatar.png" alt="">
-        <div class="profile__body">
-          <div class="profile__name">я Дима</div>
-          <div class="profile__role">дизайню интерфейсы</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="js/carousel.js?v=20261106-05"></script>
-  <script src="js/weather.js?v=20261106-05"></script>
+    <nav class="socials" aria-label="Ссылки">
+      <a class="social-btn" href="https://t.me/ngtmrss" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+        <img src="icon/telegram.svg" alt="" draggable="false">
+      </a>
+      <a class="social-btn" href="https://github.com/l3payy" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <img src="icon/github.svg" alt="" draggable="false">
+      </a>
+      <a class="social-btn" href="https://www.behance.net/" target="_blank" rel="noopener noreferrer" aria-label="Behance">
+        <img src="icon/behance.svg" alt="" draggable="false">
+      </a>
+    </nav>
+  </main>
 </body>
 </html>

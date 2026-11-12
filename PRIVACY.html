@@ -3,161 +3,164 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Политика конфиденциальности — Focus</title>
+<title>Privacy Policy — Focus</title>
 <meta name="description" content="How Focus handles local data, favicons, search and optional tabs.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { color-scheme: dark; --bg:#191919; --panel:#232323; --line:#3B3B3B; --text:#FFFFFF; --muted:#B3B3B3; --accent:#FFD3E0; }
-  * { box-sizing:border-box; }
-  html { background:#000; }
-  html, body { margin:0; min-height:100%; color:var(--text); font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
-  body {
-    line-height:1.65;
-    background-color:#000;
-    background-image:
-      linear-gradient(rgba(0,0,0,.64), rgba(0,0,0,.64)),
-      url('bg/sun.jpg');
-    background-size:cover;
-    background-position:center;
-    background-attachment:fixed;
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: #0E0E0E;
+    color: #EEEEEE;
   }
-  a { color:var(--accent); text-underline-offset:3px; }
+  body {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
   .wrap {
-    position:relative;
-    z-index:1;
-    width:min(920px, calc(100% - 40px));
-    margin:32px auto 64px;
-    padding:36px 42px 48px;
-    background:rgba(16,16,16,.72);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:24px;
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
+    width: min(820px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 56px 0 72px;
   }
   .back {
-    position:fixed;
-    top:18px;
-    left:18px;
-    z-index:10;
-    display:inline-flex;
-    align-items:center;
-    min-height:36px;
-    padding:0 14px;
-    border-radius:12px;
-    background:rgba(227,227,227,.08);
-    border:1px solid rgba(255,255,255,.1);
-    color:rgba(255,255,255,.78);
-    text-decoration:none;
-    font-family:"Unbounded", system-ui, sans-serif;
-    font-size:12px;
-    font-weight:600;
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-    transition:color .2s ease, background .2s ease;
+    display: inline-block;
+    margin-bottom: 28px;
+    color: #EEEEEE;
+    opacity: .65;
+    font-size: 14px;
+    text-decoration: none;
   }
-  .back:hover { color:#fff; background:rgba(227,227,227,.14); }
-  header { display:flex; align-items:center; gap:14px; padding:12px 0 28px; }
-  .mark { width:42px; height:42px; border-radius:13px; display:grid; place-items:center; background:var(--panel); border:1px solid var(--line); font-weight:800; font-size:21px; color:var(--accent); }
-  .brand { font-family:"Unbounded", system-ui, sans-serif; font-size:21px; font-weight:800; letter-spacing:-0.02em; }
-  .brand small { display:block; font-family:Inter, system-ui, sans-serif; font-size:12px; font-weight:500; color:var(--muted); letter-spacing:0; }
-  h1 { font-family:"Unbounded", system-ui, sans-serif; font-size:clamp(30px, 5vw, 46px); line-height:1.08; letter-spacing:-0.04em; margin:8px 0 10px; }
-  h2 { font-family:"Unbounded", system-ui, sans-serif; font-size:21px; letter-spacing:-0.02em; margin:34px 0 10px; }
-  h3 { font-size:17px; margin:22px 0 6px; }
-  p, li { color:var(--muted); }
-  .updated { color:var(--muted); font-size:14px; }
-  .note { border-left:3px solid var(--accent); padding:14px 16px; background:var(--panel); border-radius:0 12px 12px 0; margin:18px 0; }
-  code { color:var(--text); background:var(--panel); padding:2px 6px; border-radius:6px; }
-  footer { margin-top:42px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
-  ul { padding-left:22px; }
+  .back:hover { opacity: 1; }
+  h1 {
+    margin: 0 0 12px;
+    color: #EEEEEE;
+    font-size: clamp(30px, 5vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+  h2 {
+    margin: 36px 0 12px;
+    color: #EEEEEE;
+    font-size: 22px;
+    line-height: 1.3;
+  }
+  h3 {
+    margin: 24px 0 8px;
+    color: #EEEEEE;
+    font-size: 18px;
+  }
+  p, li { color: #EEEEEE; }
+  ul { padding-left: 24px; }
+  a { color: #EEEEEE; text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .updated {
+    margin: 0 0 28px;
+    color: #EEEEEE;
+    opacity: .65;
+    font-size: 14px;
+  }
+  .note {
+    margin: 20px 0;
+    padding: 2px 0 2px 16px;
+    border-left: 2px solid #EEEEEE;
+  }
+  code {
+    color: #EEEEEE;
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    font-size: .92em;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid #2A2A2A;
+    margin: 36px 0;
+  }
+  footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid #2A2A2A;
+    color: #EEEEEE;
+    opacity: .55;
+    font-size: 13px;
+  }
   @media (max-width: 640px) {
-    .wrap { width:calc(100% - 24px); margin:18px auto 32px; padding:24px 20px 32px; border-radius:18px; }
-    .back { top:12px; left:12px; }
-    h1 { font-size:30px; }
-    h2 { font-size:19px; }
+    .wrap { width: calc(100% - 32px); padding: 36px 0 48px; }
+    h2 { font-size: 20px; }
   }
 </style>
 </head>
 <body>
-<a class="back" href="index.html">← Назад</a>
 <div class="wrap">
-  <header>
-    <div class="mark" aria-hidden="true">F</div>
-    <div class="brand">Focus <small>Privacy Policy</small></div>
-  </header>
+  <a class="back" href="index.html">← Back to portfolio</a>
+  <h1>Privacy Policy — Focus</h1>
+  <p class="updated">Last updated: 12 November 2026</p>
 
-  <main>
-    <h1>Privacy Policy — Focus</h1>
-    <p class="updated">Last updated: 6 November 2026</p>
+  <p>Focus is a Chrome extension that replaces the browser's new tab page with sites, folders, themes and a Cloud board. This policy explains what data Focus uses, where it is stored, and how you can delete it.</p>
 
-    <p>Focus is a Chrome extension that replaces the browser's new tab page with sites, folders, themes and a Cloud board. This policy explains what data Focus uses, where it is stored, and how you can delete it.</p>
+  <div class="note">
+    <p><strong>Summary:</strong> Focus has no developer servers, analytics, advertising or tracking. Your content is stored locally in your browser. The only data that leaves your device is favicon and search requests described below. This version does not use Google Drive, Google sign-in, OAuth or the <code>identity</code> permission.</p>
+  </div>
 
-    <div class="note">
-      <p><strong>Summary:</strong> Focus has no developer servers, analytics, advertising or tracking. Your content is stored locally in your browser. The only data that leaves your device is favicon and search requests described below. This version does not use Google Drive, Google sign-in, OAuth or the <code>identity</code> permission.</p>
-    </div>
+  <h2>1. Data stored on your device</h2>
+  <p>Focus stores the following data locally in your browser profile:</p>
+  <ul>
+    <li>links, folders, site names and their order (localStorage);</li>
+    <li>Cloud board images (IndexedDB) and Cloud board notes and drawings (localStorage);</li>
+    <li>background images and videos you add (IndexedDB);</li>
+    <li>favicon cache (Cache Storage);</li>
+    <li>settings such as theme, search provider, mail link and toggles (localStorage).</li>
+  </ul>
+  <p>The developer does not receive this data. It remains in your browser until you delete it, clear the extension's storage, or uninstall Focus. Uninstalling the extension removes its local storage with your browser profile.</p>
 
-    <h2>1. Data stored on your device</h2>
-    <p>Focus stores the following data locally in your browser profile:</p>
-    <ul>
-      <li>links, folders, site names and their order (localStorage);</li>
-      <li>Cloud board images (IndexedDB) and Cloud board notes and drawings (localStorage);</li>
-      <li>background images and videos you add (IndexedDB);</li>
-      <li>favicon cache (Cache Storage);</li>
-      <li>settings such as theme, search provider, mail link and toggles (localStorage).</li>
-    </ul>
-    <p>The developer does not receive this data. It remains in your browser until you delete it, clear the extension's storage, or uninstall Focus. Uninstalling the extension removes its local storage with your browser profile.</p>
+  <h2>2. Network requests</h2>
+  <p>Focus uses the network only for the following purposes:</p>
+  <h3>Favicons</h3>
+  <p>When you add a site, Focus requests its icon from <code>favicon.yandex.net</code>; if Yandex has no usable icon, Focus falls back to <code>icons.duckduckgo.com</code>. The request contains the domain of the site you added. Icons are cached locally and normally served from that cache, including offline. A cache miss or refresh can request the icon again. On startup, Focus may warm the cache for the first visible tiles, which can cause a favicon request for an uncached domain.</p>
+  <h3>Search</h3>
+  <p>When you submit a search, the query is sent to your browser's default search engine through the Chrome Search API (the Standard option), or to Google/Yandex if you explicitly selected that provider for a space. The query is handled under that search provider's privacy policy.</p>
+  <p>No browsing history, page contents, analytics or advertising identifiers are sent anywhere.</p>
 
-    <h2>2. Network requests</h2>
-    <p>Focus uses the network only for the following purposes:</p>
-    <h3>Favicons</h3>
-    <p>When you add a site, Focus requests its icon from <code>favicon.yandex.net</code>; if Yandex has no usable icon, Focus falls back to <code>icons.duckduckgo.com</code>. The request contains the domain of the site you added. Icons are cached locally and normally served from that cache, including offline. A cache miss or refresh can request the icon again. On startup, Focus may warm the cache for the first visible tiles, which can cause a favicon request for an uncached domain.</p>
-    <h3>Search</h3>
-    <p>When you submit a search, the query is sent to your browser's default search engine through the Chrome Search API (the Standard option), or to Google/Yandex if you explicitly selected that provider for a space. The query is handled under that search provider's privacy policy.</p>
-    <p>No browsing history, page contents, analytics or advertising identifiers are sent anywhere.</p>
+  <h2>3. Permissions</h2>
+  <ul>
+    <li><code>unlimitedStorage</code> — prevents the browser from evicting your images and caches under storage pressure;</li>
+    <li><code>search</code> — search through the Chrome Search API with your browser's default engine;</li>
+    <li><code>contextMenus</code> — adds the “Save to Focus plus” link action; the link URL is read only when you click it;</li>
+    <li><code>storage</code> — internal queue for links saved from that context menu;</li>
+    <li><code>tabs</code> (optional) — requested only when you choose “Open tabs”; reads URLs and titles of open tabs to save new links locally in Focus+. Service pages and duplicates are skipped. Nothing is sent to the developer;</li>
+    <li>host access to <code>favicon.yandex.net</code> and <code>icons.duckduckgo.com</code> — favicon download only.</li>
+  </ul>
+  <p>Focus does not request the <code>identity</code> permission and does not use Google Drive or Google sign-in in this version.</p>
 
-    <h2>3. Permissions</h2>
-    <ul>
-      <li><code>unlimitedStorage</code> — prevents the browser from evicting your images and caches under storage pressure;</li>
-      <li><code>search</code> — search through the Chrome Search API with your browser's default engine;</li>
-      <li><code>contextMenus</code> — adds the “Save to Focus plus” link action; the link URL is read only when you click it;</li>
-      <li><code>storage</code> — internal queue for links saved from that context menu;</li>
-      <li><code>tabs</code> (optional) — requested only when you choose “Open tabs”; reads URLs and titles of open tabs to save new links locally in Focus+. Service pages and duplicates are skipped. Nothing is sent to the developer;</li>
-      <li>host access to <code>favicon.yandex.net</code> and <code>icons.duckduckgo.com</code> — favicon download only.</li>
-    </ul>
-    <p>Focus does not request the <code>identity</code> permission and does not use Google Drive or Google sign-in in this version.</p>
+  <h2>4. Data sharing and sale</h2>
+  <p>Focus does not sell, rent, trade or share personal data with advertisers, data brokers or other third parties. The developer does not operate servers that receive your content.</p>
 
-    <h2>4. Data sharing and sale</h2>
-    <p>Focus does not sell, rent, trade or share personal data with advertisers, data brokers or other third parties. The developer does not operate servers that receive your content.</p>
+  <h2>5. Data retention and deletion</h2>
+  <ul>
+    <li>Local data remains until you delete it in Focus, clear the extension's storage, or uninstall the extension.</li>
+    <li>Uninstalling Focus removes its local data with your browser profile.</li>
+    <li>For deletion questions, contact <a href="mailto:lepayy@bk.ru">lepayy@bk.ru</a>.</li>
+  </ul>
 
-    <h2>5. Data retention and deletion</h2>
-    <ul>
-      <li>Local data remains until you delete it in Focus, clear the extension's storage, or uninstall the extension.</li>
-      <li>Uninstalling Focus removes its local data with your browser profile.</li>
-      <li>For deletion questions, contact <a href="mailto:lepayy@bk.ru">lepayy@bk.ru</a>.</li>
-    </ul>
+  <h2>6. Children</h2>
+  <p>Focus is not directed to children under 13 and does not knowingly collect personal information from children. The extension has no developer-side accounts or data collection.</p>
 
-    <h2>6. Children</h2>
-    <p>Focus is not directed to children under 13 and does not knowingly collect personal information from children. The extension has no developer-side accounts or data collection.</p>
+  <h2>7. Changes</h2>
+  <p>If this policy changes, the updated text will be published on this page and will ship with the next extension update. The “Last updated” date at the top will be changed.</p>
 
-    <h2>7. Changes</h2>
-    <p>If this policy changes, the updated text will be published on this page and will ship with the next extension update. The “Last updated” date at the top will be changed.</p>
+  <h2>8. Contact</h2>
+  <p>Focus developer: lepayy. Email: <a href="mailto:lepayy@bk.ru">lepayy@bk.ru</a>. GitHub: <a href="https://github.com/l3payy/Focus">github.com/l3payy/Focus</a>.</p>
 
-    <h2>8. Contact</h2>
-    <p>Focus developer: lepayy. Email: <a href="mailto:lepayy@bk.ru">lepayy@bk.ru</a>. GitHub: <a href="https://github.com/l3payy/Focus">github.com/l3payy/Focus</a>.</p>
+  <hr>
 
-    <hr style="border:0;border-top:1px solid var(--line);margin:34px 0">
+  <h2 lang="ru">Кратко по-русски</h2>
+  <div lang="ru">
+    <p>Focus не имеет собственных серверов, аналитики, рекламы и трекинга. Ссылки, папки, фоны, заметки, рисунки и настройки хранятся только в вашем браузере. При добавлении сайта домен отправляется сервису иконок Yandex, при отсутствии иконки — DuckDuckGo; иконки кешируются локально. Поисковые запросы уходят в поисковую систему браузера по умолчанию или в явно выбранный Google/Яндекс.</p>
+    <p>В этой версии Focus не использует Google Drive, вход через Google, OAuth и разрешение <code>identity</code>. Данные не продаются и не передаются рекламным сетям. Контакт: lepayy@bk.ru.</p>
+  </div>
 
-    <h2 lang="ru">Кратко по-русски</h2>
-    <div lang="ru">
-      <p>Focus не имеет собственных серверов, аналитики, рекламы и трекинга. Ссылки, папки, фоны, заметки, рисунки и настройки хранятся только в вашем браузере. При добавлении сайта домен отправляется сервису иконок Yandex, при отсутствии иконки — DuckDuckGo; иконки кешируются локально. Поисковые запросы уходят в поисковую систему браузера по умолчанию или в явно выбранный Google/Яндекс.</p>
-      <p>В этой версии Focus не использует Google Drive, вход через Google, OAuth и разрешение <code>identity</code>. Данные не продаются и не передаются рекламным сетям. Контакт: lepayy@bk.ru.</p>
-    </div>
-  </main>
-
-  <footer>
-    Focus is an independent Chrome extension. This page is public and does not require a login.
-  </footer>
+  <footer>Focus is an independent Chrome extension. This page is public and does not require a login.</footer>
 </div>
 </body>
 </html>
