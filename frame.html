@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Frame</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    .word {
+      position: absolute;
+      top: -20px;
+      right: -10px;
+      bottom: -20px;
+      left: -10px;
+      z-index: 1;
+      width: auto;
+      height: auto;
+      background-color: var(--accent, hsl(0 100% 50%));
+      pointer-events: none;
+      user-select: none;
+      opacity: 0;
+      -webkit-mask-image: var(--src);
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      -webkit-mask-size: 100% 100%;
+      mask-image: var(--src);
+      mask-repeat: no-repeat;
+      mask-position: center;
+      mask-size: 100% 100%;
+      mask-mode: alpha;
+    }
+
+    .word.is-ready {
+      opacity: 1;
+    }
+
+    .badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 2;
+      width: 820px;
+      height: 108px;
+      transform: translate(-50%, -50%) scaleY(var(--badge-scale, 1));
+      transform-origin: center;
+      filter: brightness(0) invert(1);
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="word" id="word" role="img"></div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var params = new URLSearchParams(window.location.search);
+      var root = document.documentElement;
+      var word = document.getElementById("word");
+
+      var svg = params.get("svg") || "Focus.svg";
+      var label = params.get("label") || "Проект";
+      var badge = params.get("badge");
+
+      var accent = "hsl(0 100% 50%)";
+      try {
+        var parentAccent = window.parent.document.documentElement.style.getPropertyValue("--accent");
+        if (parentAccent) accent = parentAccent;
+      } catch (error) {
+        /* Opened outside the parent page. */
+      }
+
+      root.style.setProperty("--accent", accent);
+      word.setAttribute("aria-label", label);
+      document.title = label;
+
+      if (badge) {
+        var badgeImage = document.createElement("img");
+        badgeImage.className = "badge";
+        badgeImage.src = badge.replace(/["\\]/g, "");
+        badgeImage.alt = "Magnum opus";
+        document.body.appendChild(badgeImage);
+      }
+
+      function reveal() {
+        word.classList.add("is-ready");
+      }
+
+      root.style.setProperty("--src", 'url("' + svg.replace(/["\\]/g, "") + '")');
+
+      var probe = new Image();
+      probe.onload = reveal;
+      probe.onerror = reveal;
+      probe.src = svg;
+    })();
+  </script>
+</body>
+</html>

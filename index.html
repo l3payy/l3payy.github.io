@@ -7,7 +7,7 @@
   <meta name="description" content="Я — Дима, он же Лепай (lepayy, l3payy). Портфолио: графика, оформление Twitch-ивентов, баннеры и веб-дизайн.">
   <meta name="keywords" content="Дима, Лепай, lepayy, l3payy, msvxdlss, портфолио, дизайн, графика, Twitch, Behance">
   <meta name="author" content="Дима (Лепай)">
-  <meta name="theme-color" content="#0E0E0E">
+  <meta name="theme-color" content="#090909">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://l3payy.github.io/">
   <meta property="og:type" content="website">
@@ -19,37 +19,369 @@
   <meta name="twitter:description" content="Портфолио: графика, оформление Twitch-ивентов, баннеры и веб-дизайн.">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
-  <link rel="stylesheet" href="style.css?v=20261112-14">
+  <link rel="preload" as="image" href="assets/media/bg-poster.jpg?v=20261116-2212" fetchpriority="high">
+  <link rel="preload" as="image" href="Focus-new.svg" type="image/svg+xml" fetchpriority="high">
+  <link rel="preload" as="image" href="Aukus5-new.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="magnum-opus.svg?v=20261116-2" type="image/svg+xml" fetchpriority="high">
+
+  <script>
+    (function () {
+      "use strict";
+
+      var STORAGE_KEY = "lepay-accent-hue";
+      var MIN_DISTANCE = 110;
+      var lastHue = null;
+
+      try {
+        var stored = window.localStorage.getItem(STORAGE_KEY);
+        if (stored !== null && isFinite(Number(stored))) {
+          lastHue = ((Number(stored) % 360) + 360) % 360;
+        }
+      } catch (error) {
+        /* Storage can be unavailable. */
+      }
+
+      function distance(a, b) {
+        var diff = Math.abs(a - b) % 360;
+        return Math.min(diff, 360 - diff);
+      }
+
+      var hue = Math.floor(Math.random() * 360);
+
+      if (lastHue !== null) {
+        var attempts = 0;
+        while (distance(hue, lastHue) < MIN_DISTANCE && attempts < 30) {
+          hue = Math.floor(Math.random() * 360);
+          attempts += 1;
+        }
+        if (distance(hue, lastHue) < MIN_DISTANCE) {
+          hue = (lastHue + 180) % 360;
+        }
+      }
+
+      try {
+        window.localStorage.setItem(STORAGE_KEY, String(hue));
+      } catch (error) {
+        /* Storage can be unavailable. */
+      }
+
+      document.documentElement.style.setProperty("--accent", "hsl(" + hue + " 100% 50%)");
+      document.documentElement.dataset.hue = String(hue);
+    })();
+  </script>
+
+  <style>
+    :root {
+      --accent: hsl(0 100% 50%);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #090909;
+    }
+
+    body {
+      overscroll-behavior: none;
+      touch-action: none;
+    }
+
+    .focus-hit {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      display: block;
+      width: 100%;
+      height: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    /* Background: video → #090909 10% → accent 10% */
+
+    .stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background: #090909;
+    }
+
+    .stage__video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: grayscale(1);
+    }
+
+    .stage__shade,
+    .stage__accent {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .stage__shade {
+      background: #090909;
+      opacity: 0.1;
+    }
+
+    .stage__accent {
+      background: var(--accent);
+      opacity: 0.16;
+    }
+
+    /* One iframe per screen */
+
+    .frames {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .frame {
+      position: relative;
+      flex: 0 0 auto;
+      width: 100%;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .frame iframe {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
-  <main class="page">
-    <img class="art" src="draw.svg" alt="" aria-hidden="true" draggable="false">
+  <div class="stage" aria-hidden="true">
+    <video class="stage__video" autoplay muted loop playsinline preload="auto" poster="assets/media/bg-poster.jpg?v=20261116-2212">
+      <source src="assets/media/bg.mp4?v=20261116-2212" type="video/mp4">
+    </video>
+    <div class="stage__shade"></div>
+    <div class="stage__accent"></div>
+  </div>
 
-    <nav class="works" aria-label="Проекты">
-      <a class="work work--focus" href="https://chromewebstore.google.com/detail/focus/ocmkoiiknjiabbgkgkkfjdnnoblepckp" target="_blank" rel="noopener noreferrer">
-        <img src="svgText/Focus.svg" alt="Focus" draggable="false">
-        <img class="badge" src="bage.svg" alt="Magnum opus" draggable="false">
-      </a>
-      <a class="work" href="https://www.behance.net/gallery/251106079/aukus-5" target="_blank" rel="noopener noreferrer"><img src="svgText/AUKUS%205.svg" alt="Aukus 5" draggable="false"></a>
-      <a class="work" href="https://www.behance.net/gallery/254336243/almanah-ReYohoho" target="_blank" rel="noopener noreferrer"><img src="svgText/REYOHOHO%20almanach.svg" alt="ReYohoho Almanach" draggable="false"></a>
-      <a class="work" href="https://www.behance.net/gallery/246950545/GONKUS" target="_blank" rel="noopener noreferrer"><img src="svgText/GONKYS.svg" alt="Gonkys" draggable="false"></a>
-      <a class="work" href="https://www.behance.net/gallery/224537291/igropolius-tvich-ivent" target="_blank" rel="noopener noreferrer"><img src="svgText/IGROPOLIUS.svg" alt="Igropolius" draggable="false"></a>
-      <a class="work" href="https://www.behance.net/gallery/207948175/AUKUS-2024-Twitch-Event" target="_blank" rel="noopener noreferrer"><img src="svgText/AUKUS%203.svg" alt="Aukus 3" draggable="false"></a>
-      <a class="work work--mir" href="https://www.behance.net/gallery/246954043/banery-dlja-mir-arendy" target="_blank" rel="noopener noreferrer"><img src="svgText/MIR%20ARENDY%20RF.svg" alt="Mir Arendy RF" draggable="false"></a>
-      <a class="work" href="https://www.behance.net/gallery/225411105/sajt-poshiva-sportivnoj-odezhdy-(2021)" target="_blank" rel="noopener noreferrer"><img src="svgText/DIVIZION%20SPORT.svg" alt="Divizion Sport" draggable="false"></a>
-    </nav>
-
-    <nav class="socials" aria-label="Ссылки">
-      <a class="social-btn" href="https://t.me/ngtmrss" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-        <img src="icon/telegram.svg" alt="" draggable="false">
-      </a>
-      <a class="social-btn" href="https://github.com/l3payy" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-        <img src="icon/github.svg" alt="" draggable="false">
-      </a>
-      <a class="social-btn" href="https://www.behance.net/" target="_blank" rel="noopener noreferrer" aria-label="Behance">
-        <img src="icon/behance.svg" alt="" draggable="false">
-      </a>
-    </nav>
+  <main class="frames" data-frames aria-hidden="true">
+    <div class="frame" data-frame style="height: 100svh;">
+      <iframe src="frame.html?v=20261116-32&amp;svg=Focus-new.svg&amp;label=Focus&amp;badge=magnum-opus.svg%3Fv%3D20261116-2" title="Focus" scrolling="no" tabindex="-1" allowtransparency="true"></iframe>
+    </div>
+    <div class="frame" data-frame style="height: 0;">
+      <iframe src="frame.html?v=20261116-32&amp;svg=Aukus5-new.svg&amp;label=Aukus%205" title="Aukus 5" scrolling="no" tabindex="-1" allowtransparency="true"></iframe>
+    </div>
   </main>
+
+  <a class="focus-hit" data-focus-hit href="https://chromewebstore.google.com/detail/focus/ocmkoiiknjiabbgkgkkfjdnnoblepckp" target="_blank" rel="noopener noreferrer" aria-label="Focus — Chrome Web Store" style="height: 100svh;"></a>
+
+  <h1 class="visually-hidden">Лепай — графический дизайнер</h1>
+  <p class="visually-hidden">Focus, Aukus 5 — айдентика Twitch-ивентов, баннеры и веб-дизайн.</p>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var frames = Array.prototype.slice.call(document.querySelectorAll("[data-frame]"));
+      if (frames.length < 2) return;
+
+      var focusHit = document.querySelector("[data-focus-hit]");
+      var max = frames.length - 1;
+      var current = 0;
+      var target = 0;
+      var running = false;
+      var snapTimer = 0;
+      var touchY = null;
+      var wheelAccum = 0;
+      var wheelLocked = false;
+
+      function clamp(value, min, maxValue) {
+        return Math.min(maxValue, Math.max(min, value));
+      }
+
+      function applySizes(progress) {
+        var viewport = window.innerHeight;
+        var base = Math.floor(progress);
+        var fraction = progress - base;
+
+        frames.forEach(function (frame, index) {
+          var height = 0;
+
+          if (index === base) {
+            height = viewport * (1 - fraction);
+          } else if (index === base + 1) {
+            height = viewport * fraction;
+          }
+
+          frame.style.height = height + "px";
+
+          var iframe = frame.querySelector("iframe");
+          if (iframe && iframe.contentDocument) {
+            var badge = iframe.contentDocument.querySelector(".badge");
+            if (badge) {
+              badge.style.setProperty(
+                "--badge-scale",
+                String(viewport > 0 ? height / viewport : 0)
+              );
+            }
+          }
+        });
+
+        if (focusHit) {
+          var focusHeight = frames[0] ? frames[0].getBoundingClientRect().height : 0;
+          focusHit.style.height = focusHeight + "px";
+          focusHit.style.pointerEvents = focusHeight > 0 ? "auto" : "none";
+        }
+      }
+
+      function tick() {
+        var difference = target - current;
+
+        if (Math.abs(difference) < 0.0008) {
+          current = target;
+          applySizes(current);
+          running = false;
+          return;
+        }
+
+        current += difference * 0.24;
+        applySizes(current);
+        window.requestAnimationFrame(tick);
+      }
+
+      function start() {
+        if (running) return;
+        running = true;
+        window.requestAnimationFrame(tick);
+      }
+
+      function scheduleSnap() {
+        window.clearTimeout(snapTimer);
+        snapTimer = window.setTimeout(function () {
+          target = clamp(Math.round(target), 0, max);
+          start();
+        }, 160);
+      }
+
+      function onWheel(event) {
+        if (event.ctrlKey) return;
+
+        event.preventDefault();
+
+        var delta = event.deltaY;
+        if (event.deltaMode === 1) delta *= 16;
+        else if (event.deltaMode === 2) delta *= window.innerHeight;
+
+        if (Math.abs(delta) < 1) return;
+
+        wheelAccum += delta;
+        if (Math.abs(wheelAccum) < 30) return;
+
+        var direction = wheelAccum > 0 ? 1 : -1;
+        wheelAccum = 0;
+
+        if (wheelLocked) return;
+
+        wheelLocked = true;
+        window.setTimeout(function () {
+          wheelLocked = false;
+        }, 320);
+
+        target = clamp(Math.round(target) + direction, 0, max);
+        start();
+      }
+
+      function onKeydown(event) {
+        if (event.key === "ArrowDown" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          target = clamp(Math.ceil(target + 0.001), 0, max);
+          start();
+        } else if (event.key === "ArrowUp" || event.key === "PageUp") {
+          event.preventDefault();
+          target = clamp(Math.floor(target - 0.001), 0, max);
+          start();
+        }
+      }
+
+      function onTouchStart(event) {
+        touchY = event.touches[0].clientY;
+      }
+
+      function onTouchMove(event) {
+        if (touchY === null) return;
+
+        event.preventDefault();
+
+        var nextY = event.touches[0].clientY;
+        var viewport = window.innerHeight || 1;
+        target = clamp(target + (touchY - nextY) / (viewport * 0.5), 0, max);
+        touchY = nextY;
+
+        scheduleSnap();
+        start();
+      }
+
+      function onTouchEnd() {
+        touchY = null;
+        scheduleSnap();
+      }
+
+      window.addEventListener("wheel", onWheel, { passive: false });
+      window.addEventListener("keydown", onKeydown);
+      window.addEventListener("touchstart", onTouchStart, { passive: true });
+      window.addEventListener("touchmove", onTouchMove, { passive: false });
+      window.addEventListener("touchend", onTouchEnd, { passive: true });
+
+      window.addEventListener("resize", function () {
+        applySizes(current);
+      });
+
+      frames.forEach(function (frame) {
+        var iframe = frame.querySelector("iframe");
+        if (iframe) {
+          iframe.addEventListener("load", function () {
+            applySizes(current);
+          });
+        }
+      });
+
+      var video = document.querySelector(".stage__video");
+      if (video && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        video.pause();
+      }
+
+      applySizes(0);
+    })();
+  </script>
 </body>
 </html>
