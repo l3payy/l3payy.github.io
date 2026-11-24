@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "label": "Focus",
+    "primary": "assets/frames/1/primary.svg?v=mwujiok4",
+    "badge": "assets/frames/1/badge.svg?v=mwujiok4",
+    "outline": "assets/frames/1/outline.svg?v=mwujiok4",
+    "outlineWidth": 965,
+    "outlineHeight": 147
+  },
+  {
+    "id": "2",
+    "label": "Aukus 5",
+    "primary": "assets/frames/2/primary.svg?v=mwujiok4",
+    "badge": null,
+    "outline": null,
+    "outlineWidth": null,
+    "outlineHeight": null
+  }
+]

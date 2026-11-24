@@ -19,10 +19,7 @@
   <meta name="twitter:description" content="Портфолио: графика, оформление Twitch-ивентов, баннеры и веб-дизайн.">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
-  <link rel="preload" as="image" href="assets/media/bg-poster.jpg?v=20261123-1" fetchpriority="high">
-  <link rel="preload" as="image" href="Focus-new.svg" type="image/svg+xml" fetchpriority="high">
-  <link rel="preload" as="image" href="Aukus5-new.svg" type="image/svg+xml">
-  <link rel="preload" as="image" href="magnum-opus.svg?v=20261116-2" type="image/svg+xml" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/media/bg-poster.jpg?v=20261124-1" fetchpriority="high">
 
   <script>
     (function () {
@@ -94,7 +91,7 @@
       touch-action: none;
     }
 
-    .focus-hit {
+    .frame-hit {
       position: fixed;
       top: 0;
       left: 0;
@@ -102,11 +99,19 @@
       display: block;
       width: 100%;
       height: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
       background: transparent;
+      color: transparent;
+      font: inherit;
+      box-shadow: none;
+      -webkit-appearance: none;
+      appearance: none;
       cursor: pointer;
     }
 
-    /* Background: video → #090909 10% → accent 10% */
+    /* Background: video → accent 16% */
 
     .stage {
       position: fixed;
@@ -121,22 +126,12 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
-      filter: grayscale(1);
     }
 
-    .stage__shade,
     .stage__accent {
       position: absolute;
       inset: 0;
       pointer-events: none;
-    }
-
-    .stage__shade {
-      background: #090909;
-      opacity: 0.1;
-    }
-
-    .stage__accent {
       background: var(--accent);
       opacity: 0.16;
     }
@@ -187,201 +182,19 @@
 </head>
 <body>
   <div class="stage" aria-hidden="true">
-    <video class="stage__video" autoplay muted loop playsinline preload="auto" poster="assets/media/bg-poster.jpg?v=20261123-1">
-      <source src="assets/media/bg.mp4?v=20261123-1" type="video/mp4">
+    <video class="stage__video" autoplay muted loop playsinline preload="auto" poster="assets/media/bg-poster.jpg?v=20261124-1">
+      <source src="assets/media/bg.mp4?v=20261124-1" type="video/mp4">
     </video>
-    <div class="stage__shade"></div>
     <div class="stage__accent"></div>
   </div>
 
-  <main class="frames" data-frames aria-hidden="true">
-    <div class="frame" data-frame style="height: 100svh;">
-      <iframe src="frame.html?v=20261116-32&amp;svg=Focus-new.svg&amp;label=Focus&amp;badge=magnum-opus.svg%3Fv%3D20261116-2" title="Focus" scrolling="no" tabindex="-1" allowtransparency="true"></iframe>
-    </div>
-    <div class="frame" data-frame style="height: 0;">
-      <iframe src="frame.html?v=20261116-32&amp;svg=Aukus5-new.svg&amp;label=Aukus%205" title="Aukus 5" scrolling="no" tabindex="-1" allowtransparency="true"></iframe>
-    </div>
-  </main>
-
-  <a class="focus-hit" data-focus-hit href="https://chromewebstore.google.com/detail/focus/ocmkoiiknjiabbgkgkkfjdnnoblepckp" target="_blank" rel="noopener noreferrer" aria-label="Focus — Chrome Web Store" style="height: 100svh;"></a>
+  <main class="frames" data-frames aria-hidden="true"></main>
 
   <h1 class="visually-hidden">Лепай — графический дизайнер</h1>
-  <p class="visually-hidden">Focus, Aukus 5 — айдентика Twitch-ивентов, баннеры и веб-дизайн.</p>
+  <p class="visually-hidden" data-word-list></p>
 
-  <script>
-    (function () {
-      "use strict";
-
-      var frames = Array.prototype.slice.call(document.querySelectorAll("[data-frame]"));
-      if (frames.length < 2) return;
-
-      var focusHit = document.querySelector("[data-focus-hit]");
-      var max = frames.length - 1;
-      var current = 0;
-      var target = 0;
-      var running = false;
-      var snapTimer = 0;
-      var touchY = null;
-      var wheelAccum = 0;
-      var wheelLocked = false;
-
-      function clamp(value, min, maxValue) {
-        return Math.min(maxValue, Math.max(min, value));
-      }
-
-      function applySizes(progress) {
-        var viewport = window.innerHeight;
-        var base = Math.floor(progress);
-        var fraction = progress - base;
-
-        frames.forEach(function (frame, index) {
-          var height = 0;
-
-          if (index === base) {
-            height = viewport * (1 - fraction);
-          } else if (index === base + 1) {
-            height = viewport * fraction;
-          }
-
-          frame.style.height = height + "px";
-
-          var iframe = frame.querySelector("iframe");
-          if (iframe && iframe.contentDocument) {
-            var badge = iframe.contentDocument.querySelector(".badge");
-            if (badge) {
-              badge.style.setProperty(
-                "--badge-scale",
-                String(viewport > 0 ? height / viewport : 0)
-              );
-            }
-          }
-        });
-
-        if (focusHit) {
-          var focusHeight = frames[0] ? frames[0].getBoundingClientRect().height : 0;
-          focusHit.style.height = focusHeight + "px";
-          focusHit.style.pointerEvents = focusHeight > 0 ? "auto" : "none";
-        }
-      }
-
-      function tick() {
-        var difference = target - current;
-
-        if (Math.abs(difference) < 0.0008) {
-          current = target;
-          applySizes(current);
-          running = false;
-          return;
-        }
-
-        current += difference * 0.24;
-        applySizes(current);
-        window.requestAnimationFrame(tick);
-      }
-
-      function start() {
-        if (running) return;
-        running = true;
-        window.requestAnimationFrame(tick);
-      }
-
-      function scheduleSnap() {
-        window.clearTimeout(snapTimer);
-        snapTimer = window.setTimeout(function () {
-          target = clamp(Math.round(target), 0, max);
-          start();
-        }, 160);
-      }
-
-      function onWheel(event) {
-        if (event.ctrlKey) return;
-
-        event.preventDefault();
-
-        var delta = event.deltaY;
-        if (event.deltaMode === 1) delta *= 16;
-        else if (event.deltaMode === 2) delta *= window.innerHeight;
-
-        if (Math.abs(delta) < 1) return;
-
-        wheelAccum += delta;
-        if (Math.abs(wheelAccum) < 30) return;
-
-        var direction = wheelAccum > 0 ? 1 : -1;
-        wheelAccum = 0;
-
-        if (wheelLocked) return;
-
-        wheelLocked = true;
-        window.setTimeout(function () {
-          wheelLocked = false;
-        }, 320);
-
-        target = clamp(Math.round(target) + direction, 0, max);
-        start();
-      }
-
-      function onKeydown(event) {
-        if (event.key === "ArrowDown" || event.key === "PageDown" || event.key === " ") {
-          event.preventDefault();
-          target = clamp(Math.ceil(target + 0.001), 0, max);
-          start();
-        } else if (event.key === "ArrowUp" || event.key === "PageUp") {
-          event.preventDefault();
-          target = clamp(Math.floor(target - 0.001), 0, max);
-          start();
-        }
-      }
-
-      function onTouchStart(event) {
-        touchY = event.touches[0].clientY;
-      }
-
-      function onTouchMove(event) {
-        if (touchY === null) return;
-
-        event.preventDefault();
-
-        var nextY = event.touches[0].clientY;
-        var viewport = window.innerHeight || 1;
-        target = clamp(target + (touchY - nextY) / (viewport * 0.5), 0, max);
-        touchY = nextY;
-
-        scheduleSnap();
-        start();
-      }
-
-      function onTouchEnd() {
-        touchY = null;
-        scheduleSnap();
-      }
-
-      window.addEventListener("wheel", onWheel, { passive: false });
-      window.addEventListener("keydown", onKeydown);
-      window.addEventListener("touchstart", onTouchStart, { passive: true });
-      window.addEventListener("touchmove", onTouchMove, { passive: false });
-      window.addEventListener("touchend", onTouchEnd, { passive: true });
-
-      window.addEventListener("resize", function () {
-        applySizes(current);
-      });
-
-      frames.forEach(function (frame) {
-        var iframe = frame.querySelector("iframe");
-        if (iframe) {
-          iframe.addEventListener("load", function () {
-            applySizes(current);
-          });
-        }
-      });
-
-      var video = document.querySelector(".stage__video");
-      if (video && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        video.pause();
-      }
-
-      applySizes(0);
-    })();
-  </script>
+  <script src="frames.js?v=mwujiok4"></script>
+  <script src="link.js?v=mwujiok4"></script>
+  <script src="reel.js?v=mwujiok4"></script>
 </body>
 </html>

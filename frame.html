@@ -47,13 +47,49 @@
       top: 50%;
       left: 50%;
       z-index: 2;
-      width: 820px;
-      height: 108px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--badge-width, max-content);
+      height: var(--badge-height, auto);
+      line-height: 0;
       transform: translate(-50%, -50%) scaleY(var(--badge-scale, 1));
       transform-origin: center;
-      filter: brightness(0) invert(1);
       pointer-events: none;
       user-select: none;
+    }
+
+    .badge-outline-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .badge-outline {
+      position: absolute;
+      inset: 0;
+      background: var(--accent, hsl(0 100% 50%));
+      -webkit-mask-image: var(--outline-src);
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      -webkit-mask-size: 100% 100%;
+      mask-image: var(--outline-src);
+      mask-repeat: no-repeat;
+      mask-position: center;
+      mask-size: 100% 100%;
+      mask-mode: alpha;
+    }
+
+    .badge-white-wrap {
+      position: relative;
+      z-index: 1;
+      line-height: 0;
+    }
+
+    .badge img {
+      display: block;
+      width: auto;
+      height: auto;
     }
   </style>
 </head>
@@ -68,9 +104,12 @@
       var root = document.documentElement;
       var word = document.getElementById("word");
 
-      var svg = params.get("svg") || "Focus.svg";
+      var primary = params.get("primary") || params.get("svg") || "Focus.svg";
       var label = params.get("label") || "Проект";
       var badge = params.get("badge");
+      var outline = params.get("outline");
+      var outlineWidth = parseFloat(params.get("outlineW"));
+      var outlineHeight = parseFloat(params.get("outlineH"));
 
       var accent = "hsl(0 100% 50%)";
       try {
@@ -84,24 +123,54 @@
       word.setAttribute("aria-label", label);
       document.title = label;
 
-      if (badge) {
-        var badgeImage = document.createElement("img");
-        badgeImage.className = "badge";
-        badgeImage.src = badge.replace(/["\\]/g, "");
-        badgeImage.alt = "Magnum opus";
-        document.body.appendChild(badgeImage);
+      if (badge || outline) {
+        var badgeWrap = document.createElement("span");
+        badgeWrap.className = "badge";
+
+        if (outline) {
+          var outlineWrap = document.createElement("span");
+          outlineWrap.className = "badge-outline-wrap";
+
+          var outlineLayer = document.createElement("span");
+          outlineLayer.className = "badge-outline";
+          outlineLayer.style.setProperty(
+            "--outline-src",
+            'url("' + outline.replace(/["\\]/g, "") + '")'
+          );
+          outlineWrap.appendChild(outlineLayer);
+          badgeWrap.appendChild(outlineWrap);
+
+          if (outlineWidth > 0 && outlineHeight > 0) {
+            badgeWrap.style.setProperty("--badge-width", outlineWidth + "px");
+            badgeWrap.style.setProperty("--badge-height", outlineHeight + "px");
+          }
+        }
+
+        if (badge) {
+          var whiteWrap = document.createElement("span");
+          whiteWrap.className = "badge-white-wrap";
+
+          var badgeImage = document.createElement("img");
+          badgeImage.src = badge.replace(/["\\]/g, "");
+          badgeImage.alt = "";
+          badgeImage.setAttribute("aria-hidden", "true");
+          whiteWrap.appendChild(badgeImage);
+          badgeWrap.appendChild(whiteWrap);
+        }
+
+        document.body.appendChild(badgeWrap);
       }
 
       function reveal() {
         word.classList.add("is-ready");
       }
 
-      root.style.setProperty("--src", 'url("' + svg.replace(/["\\]/g, "") + '")');
+      root.style.setProperty("--src", 'url("' + primary.replace(/["\\]/g, "") + '")');
 
       var probe = new Image();
       probe.onload = reveal;
       probe.onerror = reveal;
-      probe.src = svg;
+      probe.src = primary;
     })();
   </script>
 </body>
