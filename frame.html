@@ -50,8 +50,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: var(--badge-width, max-content);
-      height: var(--badge-height, auto);
+      width: min(var(--badge-max-width, 845px), 86vw);
+      height: auto;
+      aspect-ratio: var(--badge-ratio, 845 / 131);
       line-height: 0;
       transform: translate(-50%, -50%) scaleY(var(--badge-scale, 1));
       transform-origin: center;
@@ -81,14 +82,19 @@
     }
 
     .badge-white-wrap {
-      position: relative;
+      position: absolute;
+      inset: 0;
       z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       line-height: 0;
     }
 
     .badge img {
       display: block;
-      width: auto;
+      width: var(--badge-white-width, 100%);
+      max-width: 100%;
       height: auto;
     }
   </style>
@@ -107,6 +113,8 @@
       var primary = params.get("primary") || params.get("svg") || "Focus.svg";
       var label = params.get("label") || "Проект";
       var badge = params.get("badge");
+      var badgeWidth = parseFloat(params.get("badgeW"));
+      var badgeHeight = parseFloat(params.get("badgeH"));
       var outline = params.get("outline");
       var outlineWidth = parseFloat(params.get("outlineW"));
       var outlineHeight = parseFloat(params.get("outlineH"));
@@ -127,6 +135,19 @@
         var badgeWrap = document.createElement("span");
         badgeWrap.className = "badge";
 
+        var naturalWidth = outlineWidth > 0 ? outlineWidth : badgeWidth;
+        var naturalHeight = outlineHeight > 0 ? outlineHeight : badgeHeight;
+        if (naturalWidth > 0 && naturalHeight > 0) {
+          badgeWrap.style.setProperty("--badge-max-width", naturalWidth + "px");
+          badgeWrap.style.setProperty("--badge-ratio", naturalWidth + " / " + naturalHeight);
+        }
+        if (outline && outlineWidth > 0 && badgeWidth > 0) {
+          badgeWrap.style.setProperty(
+            "--badge-white-width",
+            (badgeWidth / outlineWidth) * 100 + "%"
+          );
+        }
+
         if (outline) {
           var outlineWrap = document.createElement("span");
           outlineWrap.className = "badge-outline-wrap";
@@ -139,11 +160,6 @@
           );
           outlineWrap.appendChild(outlineLayer);
           badgeWrap.appendChild(outlineWrap);
-
-          if (outlineWidth > 0 && outlineHeight > 0) {
-            badgeWrap.style.setProperty("--badge-width", outlineWidth + "px");
-            badgeWrap.style.setProperty("--badge-height", outlineHeight + "px");
-          }
         }
 
         if (badge) {

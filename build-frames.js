@@ -100,9 +100,11 @@ function main() {
 
     const badgeName = badgeFileIn(files);
     let badgeRelative = null;
+    let badgeSize = null;
     if (badgeName) {
       badgeRelative = "assets/frames/" + folder + "/badge.svg?v=" + version;
       const badgeSource = fs.readFileSync(path.join(folderPath, badgeName), "utf8");
+      badgeSize = svgSize(badgeSource);
       const badgeOutput = outlineName ? sealBadge(badgeSource) : badgeSource;
       fs.writeFileSync(path.join(outputFolder, "badge.svg"), badgeOutput, "utf8");
     }
@@ -123,6 +125,8 @@ function main() {
       label: label,
       primary: primaryRelative,
       badge: badgeRelative,
+      badgeWidth: badgeSize ? badgeSize.width : null,
+      badgeHeight: badgeSize ? badgeSize.height : null,
       outline: outlineRelative,
       outlineWidth: outlineSize ? outlineSize.width : null,
       outlineHeight: outlineSize ? outlineSize.height : null

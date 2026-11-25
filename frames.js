@@ -2,20 +2,24 @@ window.FRAMES = [
   {
     "id": "1",
     "label": "Focus",
-    "primary": "assets/frames/1/primary.svg?v=mwujiok4",
-    "badge": "assets/frames/1/badge.svg?v=mwujiok4",
-    "outline": "assets/frames/1/outline.svg?v=mwujiok4",
-    "outlineWidth": 965,
-    "outlineHeight": 147
+    "primary": "assets/frames/1/primary.svg?v=mww0ojhr",
+    "badge": "assets/frames/1/badge.svg?v=mww0ojhr",
+    "badgeWidth": 920,
+    "badgeHeight": 120,
+    "outline": "assets/frames/1/outline.svg?v=mww0ojhr",
+    "outlineWidth": 945,
+    "outlineHeight": 144
   },
   {
     "id": "2",
     "label": "Aukus 5",
-    "primary": "assets/frames/2/primary.svg?v=mwujiok4",
-    "badge": null,
-    "outline": null,
-    "outlineWidth": null,
-    "outlineHeight": null
+    "primary": "assets/frames/2/primary.svg?v=mww0ojhr",
+    "badge": "assets/frames/2/badge.svg?v=mww0ojhr",
+    "badgeWidth": 546,
+    "badgeHeight": 120,
+    "outline": "assets/frames/2/outline.svg?v=mww0ojhr",
+    "outlineWidth": 570,
+    "outlineHeight": 144
   }
 ]
 ;

@@ -8,7 +8,7 @@
 
   if (!framesRoot || framesData.length === 0) return;
 
-  var FRAME_VERSION = "20261124-6";
+  var FRAME_VERSION = "20261125-1";
   var frames = [];
   var frameHits = [];
   var max = Math.max(0, framesData.length - 1);
@@ -52,7 +52,11 @@
       query.set("v", FRAME_VERSION);
       query.set("primary", item.primary);
       query.set("label", label);
-      if (item.badge) query.set("badge", item.badge);
+      if (item.badge) {
+        query.set("badge", item.badge);
+        if (item.badgeWidth) query.set("badgeW", String(item.badgeWidth));
+        if (item.badgeHeight) query.set("badgeH", String(item.badgeHeight));
+      }
       if (item.outline) {
         query.set("outline", item.outline);
         if (item.outlineWidth) query.set("outlineW", String(item.outlineWidth));
