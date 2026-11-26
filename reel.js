@@ -8,9 +8,10 @@
 
   if (!framesRoot || framesData.length === 0) return;
 
-  var FRAME_VERSION = "20261126-3";
+  var FRAME_VERSION = "20261127-5";
   var frames = [];
   var frameHits = [];
+  var activeVideoIndex = -1;
   var max = Math.max(0, framesData.length - 1);
   var current = 0;
   var target = 0;
@@ -52,6 +53,8 @@
       query.set("v", FRAME_VERSION);
       query.set("primary", item.primary);
       query.set("label", label);
+      if (item.video) query.set("video", item.video);
+      if (item.poster) query.set("poster", item.poster);
       if (item.badge) {
         query.set("badge", item.badge);
         if (item.badgeWidth) query.set("badgeW", String(item.badgeWidth));
@@ -98,6 +101,7 @@
       var iframe = frame.querySelector("iframe");
       if (iframe) {
         iframe.addEventListener("load", function () {
+          activeVideoIndex = -1;
           applySizes(current);
         });
       }
@@ -106,6 +110,25 @@
 
   function clamp(value, min, maxValue) {
     return Math.min(maxValue, Math.max(min, value));
+  }
+
+  function updateVideos(progress) {
+    var center = clamp(Math.round(progress), 0, max);
+    if (center === activeVideoIndex) return;
+
+    activeVideoIndex = center;
+
+    for (var index = center - 1; index <= center + 1; index += 1) {
+      if (index < 0 || index >= frames.length) continue;
+
+      var iframe = frames[index].querySelector("iframe");
+      var api = iframe && iframe.contentWindow && iframe.contentWindow.frameVideoApi;
+      if (!api) continue;
+
+      api.load();
+      if (index === center) api.play();
+      else api.pause();
+    }
   }
 
   function applySizes(progress) {
@@ -147,6 +170,8 @@
 
       offset += height;
     });
+
+    updateVideos(progress);
   }
 
   function tick() {
@@ -250,11 +275,6 @@
   window.addEventListener("resize", function () {
     applySizes(current);
   });
-
-  var video = document.querySelector(".stage__video");
-  if (video && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    video.pause();
-  }
 
   build();
   applySizes(0);

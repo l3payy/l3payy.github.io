@@ -19,57 +19,10 @@
   <meta name="twitter:description" content="Портфолио: графика, оформление Twitch-ивентов, баннеры и веб-дизайн.">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
-  <link rel="preload" as="image" href="assets/media/bg-poster.jpg?v=ad68113281" fetchpriority="high">
-
-  <script>
-    (function () {
-      "use strict";
-
-      var STORAGE_KEY = "lepay-accent-hue";
-      var MIN_DISTANCE = 110;
-      var lastHue = null;
-
-      try {
-        var stored = window.localStorage.getItem(STORAGE_KEY);
-        if (stored !== null && isFinite(Number(stored))) {
-          lastHue = ((Number(stored) % 360) + 360) % 360;
-        }
-      } catch (error) {
-        /* Storage can be unavailable. */
-      }
-
-      function distance(a, b) {
-        var diff = Math.abs(a - b) % 360;
-        return Math.min(diff, 360 - diff);
-      }
-
-      var hue = Math.floor(Math.random() * 360);
-
-      if (lastHue !== null) {
-        var attempts = 0;
-        while (distance(hue, lastHue) < MIN_DISTANCE && attempts < 30) {
-          hue = Math.floor(Math.random() * 360);
-          attempts += 1;
-        }
-        if (distance(hue, lastHue) < MIN_DISTANCE) {
-          hue = (lastHue + 180) % 360;
-        }
-      }
-
-      try {
-        window.localStorage.setItem(STORAGE_KEY, String(hue));
-      } catch (error) {
-        /* Storage can be unavailable. */
-      }
-
-      document.documentElement.style.setProperty("--accent", "hsl(" + hue + " 100% 50%)");
-      document.documentElement.dataset.hue = String(hue);
-    })();
-  </script>
 
   <style>
     :root {
-      --accent: hsl(0 100% 50%);
+      --accent: #FF0004;
     }
 
     *,
@@ -109,31 +62,6 @@
       -webkit-appearance: none;
       appearance: none;
       cursor: pointer;
-    }
-
-    /* Background: video → accent 16% */
-
-    .stage {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
-      background: #090909;
-    }
-
-    .stage__video {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: fill;
-    }
-
-    .stage__accent {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: var(--accent);
-      opacity: 0.16;
     }
 
     /* One iframe per screen */
@@ -181,20 +109,13 @@
   </style>
 </head>
 <body>
-  <div class="stage" aria-hidden="true">
-    <video class="stage__video" autoplay muted loop playsinline preload="auto" poster="assets/media/bg-poster.jpg?v=ad68113281">
-      <source src="assets/media/bg.mp4?v=fac92b5e44" type="video/mp4">
-    </video>
-    <div class="stage__accent"></div>
-  </div>
-
   <main class="frames" data-frames aria-hidden="true"></main>
 
   <h1 class="visually-hidden">Лепай — графический дизайнер</h1>
   <p class="visually-hidden" data-word-list></p>
 
-  <script src="frames.js?v=mwy22m99"></script>
-  <script src="link.js?v=mwy22m99"></script>
-  <script src="reel.js?v=mwy22m99"></script>
+  <script src="frames.js?v=mwy47g56"></script>
+  <script src="link.js?v=mwy47g56"></script>
+  <script src="reel.js?v=mwy47g56"></script>
 </body>
 </html>

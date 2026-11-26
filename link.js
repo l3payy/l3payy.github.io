@@ -6,5 +6,8 @@ window.FRAME_LINKS = {
   "1": "https://chromewebstore.google.com/detail/focus/ocmkoiiknjiabbgkgkkfjdnnoblepckp",
 
   // 2 — Aukus 5
-  "2": "https://www.behance.net/gallery/251106079/aukus-5"
+  "2": "https://www.behance.net/gallery/251106079/aukus-5",
+
+  // 3 — Reyohoho
+  "3": "https://www.behance.net/gallery/254336243/almanah-ReYohoho"
 };

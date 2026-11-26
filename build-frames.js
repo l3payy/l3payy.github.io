@@ -5,7 +5,6 @@ const path = require("path");
 const root = __dirname;
 const sourceDir = path.join(root, "Frame");
 const outputDir = path.join(root, "assets", "frames");
-const framesJsonPath = path.join(root, "frames.json");
 const framesJsPath = path.join(root, "frames.js");
 
 function readOptional(filePath) {
@@ -38,6 +37,14 @@ function outlineFileIn(files) {
     files.find((file) => /_2[-_]outline\.svg$/i.test(file)) ||
     files.find((file) => /_outline\.svg$/i.test(file))
   );
+}
+
+function videoFileIn(files) {
+  return files.find((file) => /\.(mp4|webm)$/i.test(file));
+}
+
+function posterFileIn(files) {
+  return files.find((file) => /^poster\.(jpe?g|png|webp)$/i.test(file));
 }
 
 function sealBadge(svg) {
@@ -86,8 +93,6 @@ function main() {
 
   const frames = [];
   const version = Date.now().toString(36);
-  const videoVersion = fileVersion(path.join(root, "assets", "media", "bg.mp4"), version);
-  const posterVersion = fileVersion(path.join(root, "assets", "media", "bg-poster.jpg"), version);
 
   for (const folder of folders) {
     const folderPath = path.join(sourceDir, folder);
@@ -129,12 +134,38 @@ function main() {
       outlineSize = svgSize(outlineSource);
     }
 
+    const videoName = videoFileIn(files);
+    let videoRelative = null;
+    if (videoName) {
+      videoRelative =
+        "Frame/" +
+        encodeURIComponent(folder) +
+        "/" +
+        encodeURIComponent(videoName) +
+        "?v=" +
+        fileVersion(path.join(folderPath, videoName), version);
+    }
+
+    const posterName = posterFileIn(files);
+    let posterRelative = null;
+    if (posterName) {
+      posterRelative =
+        "Frame/" +
+        encodeURIComponent(folder) +
+        "/" +
+        encodeURIComponent(posterName) +
+        "?v=" +
+        fileVersion(path.join(folderPath, posterName), version);
+    }
+
     const label = readOptional(path.join(folderPath, "label.txt")) || "Frame " + folder;
 
     frames.push({
       id: folder,
       label: label,
       primary: primaryRelative,
+      video: videoRelative,
+      poster: posterRelative,
       badge: badgeRelative,
       badgeWidth: badgeSize ? badgeSize.width : null,
       badgeHeight: badgeSize ? badgeSize.height : null,
@@ -145,7 +176,6 @@ function main() {
   }
 
   const json = JSON.stringify(frames, null, 2) + "\n";
-  fs.writeFileSync(framesJsonPath, json, "utf8");
   fs.writeFileSync(framesJsPath, "window.FRAMES = " + json + ";\n", "utf8");
 
   const indexPath = path.join(root, "index.html");
@@ -157,14 +187,6 @@ function main() {
       );
       html = html.replace(pattern, "$1?v=" + version + "$3");
     });
-    html = html.replace(
-      /(assets\/media\/bg-poster\.jpg)(\?v=[^"'\s>]*)?/g,
-      "$1?v=" + posterVersion
-    );
-    html = html.replace(
-      /(assets\/media\/bg\.mp4)(\?v=[^"'\s>]*)?/g,
-      "$1?v=" + videoVersion
-    );
     fs.writeFileSync(indexPath, html, "utf8");
   }
 
@@ -172,7 +194,7 @@ function main() {
   frames.forEach((frame, index) => {
     console.log("  " + (index + 1) + ". " + frame.id + " — " + frame.label + (frame.badge ? " + badge" : "") + (frame.link ? " + link" : ""));
   });
-  console.log("Wrote frames.js, frames.json and assets/frames.");
+  console.log("Wrote frames.js and assets/frames.");
 }
 
 main();
