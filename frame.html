@@ -6,6 +6,10 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Frame</title>
   <style>
+    :root {
+      --word-max-width: 62.5vw;
+    }
+
     html,
     body {
       height: 100%;
@@ -17,12 +21,13 @@
     .word {
       position: absolute;
       top: -20px;
-      right: -10px;
       bottom: -20px;
-      left: -10px;
+      left: 50%;
       z-index: 1;
-      width: auto;
+      width: calc(100% + 20px);
+      max-width: var(--word-max-width, 1200px);
       height: auto;
+      transform: translateX(-50%);
       background-color: var(--accent, hsl(0 100% 50%));
       pointer-events: none;
       user-select: none;
@@ -40,6 +45,12 @@
 
     .word.is-ready {
       opacity: 1;
+    }
+
+    @media (orientation: portrait) {
+      .word {
+        max-width: none;
+      }
     }
 
     .badge {

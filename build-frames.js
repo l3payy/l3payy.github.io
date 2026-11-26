@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 
@@ -12,6 +13,14 @@ function readOptional(filePath) {
     return fs.readFileSync(filePath, "utf8").replace(/^\uFEFF/, "").trim();
   } catch (error) {
     return "";
+  }
+}
+
+function fileVersion(filePath, fallback) {
+  try {
+    return crypto.createHash("sha1").update(fs.readFileSync(filePath)).digest("hex").slice(0, 10);
+  } catch (error) {
+    return fallback;
   }
 }
 
@@ -77,6 +86,8 @@ function main() {
 
   const frames = [];
   const version = Date.now().toString(36);
+  const videoVersion = fileVersion(path.join(root, "assets", "media", "bg.mp4"), version);
+  const posterVersion = fileVersion(path.join(root, "assets", "media", "bg-poster.jpg"), version);
 
   for (const folder of folders) {
     const folderPath = path.join(sourceDir, folder);
@@ -146,6 +157,14 @@ function main() {
       );
       html = html.replace(pattern, "$1?v=" + version + "$3");
     });
+    html = html.replace(
+      /(assets\/media\/bg-poster\.jpg)(\?v=[^"'\s>]*)?/g,
+      "$1?v=" + posterVersion
+    );
+    html = html.replace(
+      /(assets\/media\/bg\.mp4)(\?v=[^"'\s>]*)?/g,
+      "$1?v=" + videoVersion
+    );
     fs.writeFileSync(indexPath, html, "utf8");
   }
 

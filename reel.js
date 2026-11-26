@@ -8,7 +8,7 @@
 
   if (!framesRoot || framesData.length === 0) return;
 
-  var FRAME_VERSION = "20261125-1";
+  var FRAME_VERSION = "20261126-3";
   var frames = [];
   var frameHits = [];
   var max = Math.max(0, framesData.length - 1);
