@@ -2,7 +2,7 @@ window.FRAMES = [
   {
     "id": "1",
     "label": "Focus",
-    "primary": "assets/frames/1/primary.svg?v=mwy1iksz",
+    "primary": "assets/frames/1/primary.svg?v=mwy22m99",
     "badge": null,
     "badgeWidth": null,
     "badgeHeight": null,
@@ -13,7 +13,7 @@ window.FRAMES = [
   {
     "id": "2",
     "label": "Aukus 5",
-    "primary": "assets/frames/2/primary.svg?v=mwy1iksz",
+    "primary": "assets/frames/2/primary.svg?v=mwy22m99",
     "badge": null,
     "badgeWidth": null,
     "badgeHeight": null,
